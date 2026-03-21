@@ -1,17 +1,12 @@
 const express = require('express');
-const cors = require('cors');
-
+const router = require('./routes/api');
 const app = express();
-const PORT = 5000;
 
-app.use(cors());
+app.use('/api', router);
 app.use(express.json());
+app.use(express.urlencoded());
 
-// Contoh route
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello dari Express!' });
-});
 
-app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
