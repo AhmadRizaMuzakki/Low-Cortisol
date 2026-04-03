@@ -1,6 +1,8 @@
-class StudentController {
+const MapelModel = require('../../models/induk_akademik/MapelModel');
+
+class MapelController {
     index(req, res) {
-        res.send('Hello World');
+        res.send('Hello World mapel');
     }
     store(req, res) {
         res.send('Hello World');
@@ -12,5 +14,4 @@ class StudentController {
         res.send('Hello World');
     }
 }
-
-module.exports = new StudentController();
+module.exports = new MapelController();
