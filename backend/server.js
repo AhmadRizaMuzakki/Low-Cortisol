@@ -3,9 +3,9 @@ const router = require('./routes/api');
 const db = require('./config/database');
 const app = express();
 
-app.use('/api', router);
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api', router);
 
 app.get('/test-koneksi', (req, res) => {
     db.query('SELECT 1', (err, results) => {
