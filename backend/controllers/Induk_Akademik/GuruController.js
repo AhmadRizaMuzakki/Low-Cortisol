@@ -2,7 +2,7 @@ const GuruModel = require('../../models/induk_akademik/GuruModel');
 
 class GuruController {
     index(req, res) {
-        GuruModel.getAllGuru((err, results) => {
+        GuruModel.getAllGurus((err, results) => {
             if(err){
                 res.status(500).json({ error: err.message });
             }else{
