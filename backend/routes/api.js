@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const UserController = require('../controllers/Login/UserController');
+const UserController = require('../controllers/Authtentication/UserController');
 const SiswaController = require('../controllers/Induk_Akademik/SiswaController');
 const MapelController = require('../controllers/Induk_Akademik/MapelController');
 const GuruController = require('../controllers/Induk_Akademik/GuruController');
@@ -8,6 +8,7 @@ const KelasController = require('../controllers/Induk_Akademik/KelasController')
 const PenilaianController = require('../controllers/Penilaian/PenilaianController');
 const PenjadwalanController = require('../controllers/Penjadwalan/PenjadwalanController');
 const KehadiranController = require('../controllers/Kehadiran/KehadiranController');
+const RegisterController = require('../controllers/Authtentication/RegisterController');
 
 router.get('/', (req, res) => {
     res.send('Hello World home');
@@ -58,5 +59,5 @@ router.post('/kehadiran', KehadiranController.store);
 router.put('/kehadiran/:id', KehadiranController.update);
 router.delete('/kehadiran/:id', KehadiranController.destroy);
 
-
+router.post('/register', RegisterController.register);
 module.exports = router;
