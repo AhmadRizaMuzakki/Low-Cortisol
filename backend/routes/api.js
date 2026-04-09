@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const UserController = require('../controllers/Authtentication/UserController');
+// const UserController = require('../controllers/Authtentication/UserController');
 const SiswaController = require('../controllers/Induk_Akademik/SiswaController');
 const MapelController = require('../controllers/Induk_Akademik/MapelController');
 const GuruController = require('../controllers/Induk_Akademik/GuruController');
@@ -14,10 +14,10 @@ router.get('/', (req, res) => {
     res.send('Hello World home');
 });
 
-router.get('/users', UserController.index);
-router.post('/users', UserController.store);
-router.put('/users/:id', UserController.update);
-router.delete('/users/:id', UserController.destroy);
+// router.get('/users', UserController.index);
+// router.post('/users', UserController.store);
+// router.put('/users/:id', UserController.update);
+// router.delete('/users/:id', UserController.destroy);
 
 
 // route data induk akademik
