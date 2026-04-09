@@ -35,5 +35,7 @@ router.post('/kehadiran', KehadiranController.store);
 router.put('/kehadiran/:id', KehadiranController.update);
 router.delete('/kehadiran/:id', KehadiranController.destroy);
 
+router.get('/login', UserController.login);
+
 
 module.exports = router;

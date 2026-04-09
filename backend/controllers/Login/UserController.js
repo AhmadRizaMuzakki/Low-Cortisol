@@ -11,6 +11,9 @@ class UserController {
     destroy(req, res) {
         res.send('Hello World');
     }
+    login(req, res) {
+        res.send('Ini adalah endpoint login');
+    }
 }
 
 module.exports = new UserController();
