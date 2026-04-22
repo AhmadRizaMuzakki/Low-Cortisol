@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const UserController = require('../controllers/Authtentication/UserController');
 const SiswaController = require('../controllers/Induk_Akademik/SiswaController');
 const MapelController = require('../controllers/Induk_Akademik/MapelController');
 const GuruController = require('../controllers/Induk_Akademik/GuruController');
