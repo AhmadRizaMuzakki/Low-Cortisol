@@ -1,8 +1,5 @@
 {
   "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "jsonwebtoken": "^9.0.3",
-    "jwet": "^1.0.4",
     "mysql2": "^3.20.0"
   }
 }
