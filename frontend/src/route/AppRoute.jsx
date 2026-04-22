@@ -16,6 +16,7 @@ import RaportPage from "../pages/dashboard/e-raport/RaportPage";
 import JadwalPage from "../pages/dashboard/jadwal/JadwalPage";
 import LaporanNilaiPage from "../pages/dashboard/laporan/LaporanNilaiPage";
 import LaporanSiswaPage from "../pages/dashboard/laporan/LaporanSiswaPage";
+import PengumumanPage from "../pages/Pengumuman/PengumumanPage";
 
 function DashboardLayoutWrapper() {
   return (
@@ -49,6 +50,7 @@ export default function AppRouter() {
           <Route path="jadwal" element={<JadwalPage />} />
           <Route path="laporan/nilai" element={<LaporanNilaiPage />} />
           <Route path="laporan/siswa" element={<LaporanSiswaPage />} />
+          <Route path="pengumuman" element={<PengumumanPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

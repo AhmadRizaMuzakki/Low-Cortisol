@@ -255,6 +255,14 @@ const SidebarContent = () => (
       </li>
     </SidebarSection>
 
+    <SidebarSection title="Pengumuman">
+      <li>
+        <NavLink to="/dashboard/pengumuman" className={sidebarLinkClass}>
+          Pengumuman
+        </NavLink>
+      </li>
+    </SidebarSection> 
+
     <SidebarSection title="Jadwal">
       <li>
         <NavLink to="/dashboard/jadwal" className={sidebarLinkClass}>
