@@ -62,6 +62,12 @@ router.post('/kehadiran', Auth, Authorize('admin', 'guru'), KehadiranController.
 router.put('/kehadiran/:id', Auth, Authorize('admin', 'guru'), KehadiranController.update);
 router.delete('/kehadiran/:id', Auth, Authorize('admin'), KehadiranController.destroy);
 
+// route data pengumuman
+router.get('/pengumuman', Auth, Authorize('admin', 'guru', 'siswa'), PengumumanController.index);
+router.post('/pengumuman', Auth, Authorize('admin', 'guru'), PengumumanController.store);
+router.put('/pengumuman/:id', Auth, Authorize('admin', 'guru'), PengumumanController.update);
+router.delete('/pengumuman/:id', Auth, Authorize('admin'), PengumumanController.destroy);
+
 router.post('/register', RegisterController.register);
 router.post('/login', LoginController.login);
 module.exports = router;
