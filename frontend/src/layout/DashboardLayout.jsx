@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 
 /**
  * DashboardLayout
@@ -7,7 +8,6 @@ import React, { useState } from 'react';
  */
 const DashboardLayout = ({ children }) => {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
-  const [isPagesMenuOpen, setIsPagesMenuOpen] = useState(false);
   const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [dark, setDark] = useState(false);
@@ -15,7 +15,6 @@ const DashboardLayout = ({ children }) => {
   // Fungsi toggle
   const toggleSideMenu = () => setIsSideMenuOpen(!isSideMenuOpen);
   const closeSideMenu = () => setIsSideMenuOpen(false);
-  const togglePagesMenu = () => setIsPagesMenuOpen(!isPagesMenuOpen);
   const toggleTheme = () => setDark(!dark);
   const toggleNotificationsMenu = () => setIsNotificationsMenuOpen(!isNotificationsMenuOpen);
   const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
@@ -25,10 +24,7 @@ const DashboardLayout = ({ children }) => {
       
       {/* Desktop sidebar */}
       <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
-        <SidebarContent 
-          togglePagesMenu={togglePagesMenu} 
-          isPagesMenuOpen={isPagesMenuOpen} 
-        />
+        <SidebarContent />
       </aside>
 
       {/* Mobile sidebar */}
@@ -42,10 +38,7 @@ const DashboardLayout = ({ children }) => {
           <aside
             className="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white dark:bg-gray-800 md:hidden transition-all duration-300"
           >
-            <SidebarContent 
-              togglePagesMenu={togglePagesMenu} 
-              isPagesMenuOpen={isPagesMenuOpen} 
-            />
+            <SidebarContent />
           </aside>
         </>
       )}
@@ -152,55 +145,144 @@ const DashboardLayout = ({ children }) => {
   );
 };
 
+const sidebarLinkClass = ({ isActive }) =>
+  `inline-flex items-center w-full px-2 py-2 text-sm font-medium rounded-md transition-colors ${
+    isActive
+      ? "text-purple-700 bg-purple-50 dark:text-purple-300 dark:bg-gray-800"
+      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-800/50"
+  }`;
+
+const SidebarSection = ({ title, children }) => (
+  <div className="mt-4 px-6">
+    <p className="mb-2 text-xs font-semibold tracking-wide text-gray-400 uppercase dark:text-gray-500">
+      {title}
+    </p>
+    <ul className="space-y-1">{children}</ul>
+  </div>
+);
+
 /**
- * SidebarContent Component
- * Konten sidebar dipisah agar tidak duplikasi antara desktop & mobile view.
+ * SidebarContent — navigasi mengikuti struktur folder pages/dashboard.
  */
-const SidebarContent = ({ togglePagesMenu, isPagesMenuOpen }) => (
+const SidebarContent = () => (
   <div className="py-4 text-gray-500 dark:text-gray-400">
-    <a className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
+    <Link
+      to="/dashboard"
+      className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
+    >
       Sistem Sekolah
-    </a>
-    <ul className="mt-6">
-      <li className="relative px-6 py-3">
-        <span className="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"></span>
-        <a className="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 dark:text-gray-100" href="#">
-          <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+    </Link>
+
+    <ul className="mt-6 px-6">
+      <li>
+        <NavLink to="/dashboard" end className={sidebarLinkClass}>
+          <svg
+            className="w-5 h-5 shrink-0"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
             <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
           </svg>
-          <span className="ml-4">Dashboard</span>
-        </a>
+          <span className="ml-3">Dashboard</span>
+        </NavLink>
       </li>
     </ul>
-    <ul>
-      <li className="relative px-6 py-3">
-        <button
-          className="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-          onClick={togglePagesMenu}
+
+    <SidebarSection title="Induk akademik">
+      <li>
+        <NavLink
+          to="/dashboard/induk-akademik/siswa"
+          className={sidebarLinkClass}
         >
-          <span className="inline-flex items-center">
-            <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-              <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-            </svg>
-            <span className="ml-4">Pages</span>
-          </span>
-          <svg className={`w-4 h-4 transition-transform ${isPagesMenuOpen ? 'rotate-180' : ''}`} fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
-        </button>
-        {isPagesMenuOpen && (
-          <ul className="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900">
-            <li className="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"><a className="w-full" href="#">Login</a></li>
-            <li className="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"><a className="w-full" href="#">Create account</a></li>
-            <li className="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"><a className="w-full" href="#">404</a></li>
-          </ul>
-        )}
+          Siswa
+        </NavLink>
       </li>
-    </ul>
+      <li>
+        <NavLink to="/dashboard/induk-akademik/guru" className={sidebarLinkClass}>
+          Guru
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/induk-akademik/kelas" className={sidebarLinkClass}>
+          Kelas
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/dashboard/induk-akademik/mata-pelajaran"
+          className={sidebarLinkClass}
+        >
+          Mata pelajaran
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/dashboard/induk-akademik/tahun-ajaran"
+          className={sidebarLinkClass}
+        >
+          Tahun ajaran
+        </NavLink>
+      </li>
+    </SidebarSection>
+
+    <SidebarSection title="Presensi">
+      <li>
+        <NavLink to="/dashboard/presensi" end className={sidebarLinkClass}>
+          Input presensi
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/presensi/rekap" className={sidebarLinkClass}>
+          Rekap presensi
+        </NavLink>
+      </li>
+    </SidebarSection>
+
+    <SidebarSection title="E-raport">
+      <li>
+        <NavLink to="/dashboard/e-raport/nilai" className={sidebarLinkClass}>
+          Nilai
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/e-raport/raport" className={sidebarLinkClass}>
+          Raport
+        </NavLink>
+      </li>
+    </SidebarSection>
+
+    <SidebarSection title="Jadwal">
+      <li>
+        <NavLink to="/dashboard/jadwal" className={sidebarLinkClass}>
+          Jadwal pelajaran
+        </NavLink>
+      </li>
+    </SidebarSection>
+
+    <SidebarSection title="Laporan">
+      <li>
+        <NavLink to="/dashboard/laporan/nilai" className={sidebarLinkClass}>
+          Laporan nilai
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/dashboard/laporan/siswa" className={sidebarLinkClass}>
+          Laporan siswa
+        </NavLink>
+      </li>
+    </SidebarSection>
+
     <div className="px-6 my-6">
-      <button className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors">
-        Create account <span className="ml-2">+</span>
-      </button>
+      <Link
+        to="/register"
+        className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition-colors"
+      >
+        Buat akun <span className="ml-2">+</span>
+      </Link>
     </div>
   </div>
 );
