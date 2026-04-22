@@ -1,7 +1,7 @@
 const db = require('../../config/database');
 
 class MapelModel {
-    static getAllMapels(callback){
+    static getAllMapel(callback){
         db.query('SELECT * FROM mapel', (err, results) => {
             if(err){
                 callback(err, null);

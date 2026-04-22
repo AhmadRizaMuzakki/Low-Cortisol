@@ -1,24 +1,24 @@
 const UserModel = require('../../models/Authtentication/UserModel');
+const { validatorRegister } = require('../../utils/ValidationController/validatorAuthtentication');
+const AppError = require('../../utils/AppError');
+const bcrypt = require('bcryptjs');
 
 class RegisterController {
     register(req, res) {
-        const { username, password, role} = req.body;
-        UserModel.createUser(username, password, role, (err, results) => {
+        const data = req.body;
+        const error = validatorRegister(data);
+        if (error) {
+            return AppError(res, error, 400, error.error);
+        }
+        const hashedPassword = bcrypt.hashSync(data.password, 10);
+
+        UserModel.createUser(data.username, hashedPassword, data.role, (err, results) => {
             if(err){
-                res.json({
-                    message: 'error',
-                    error: err.message,
-                    data: []
-                });
+                return AppError(res, err, 500, err.message);
             }else{
-                res.json({
-                    message: 'success',
-                    data: results
-                });
+                return AppError(res, results, 201, 'User berhasil ditambahkan');
             }
         });
-        
     }
 }
-
-module.exports = new RegisterController();
+module.exports = new RegisterController(); 
