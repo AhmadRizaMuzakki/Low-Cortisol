@@ -1,45 +1,62 @@
 const MapelModel = require('../../models/induk_akademik/MapelModel');
+const validationId = require('../../utils/ValidationController/ValidationId');
+const validationMapel = require('../../utils/ValidationController/ValidationMapel');
+const AppError = require('../../utils/AppError');
 
 class MapelController {
     index(req, res) {
         MapelModel.getAllMapel((err, results) => {
             if(err){
-                res.status(500).json({ error: err.message });
+                return AppError(res, err, 500, err.message);
             }else{
-                res.status(200).json({ message: 'Mapel berhasil diambil', data: results });
+                return AppError(res, results, 200, 'Mapel berhasil diambil');
             }
         });
     }
     store(req, res) {
-        const { nama_mapel, kkm } = req.body;
-        const mapel = { nama_mapel, kkm };
-        MapelModel.createMapel(mapel, (err, results) => {
+        const data = req.body;
+        const error = validationMapel(data);
+        if (error) {
+            return AppError(res, error, 400, error.error);
+        }
+        MapelModel.createMapel(data, (err, results) => {
             if(err){
-                res.status(500).json({ error: err.message });
+                return AppError(res, err, 500, err.message);
             }else{
-                res.status(200).json({ message: 'Mapel berhasil ditambahkan', data: results });
+                return AppError(res, results, 201, 'Mapel berhasil ditambahkan');
             }
         });
     }
     update(req, res) {
         const { id } = req.params;
-        const { nama_mapel, kkm } = req.body;
-        const mapel = { id, nama_mapel, kkm };
-        MapelModel.updateMapel(id, mapel, (err, results) => {
+        const AppError = validationId(id);
+        if (AppError) {
+            return AppError(res, AppError, 400, AppError.error);
+        }
+        const data = req.body;
+        const bodyError = validationMapel(data);
+        if (bodyError) {
+            return AppError(res, bodyError, 400, bodyError.error);
+        }
+        MapelModel.updateMapel(id, data, (err, results) => {
             if(err){
-                res.status(500).json({ error: err.message });
+                return AppError(res, err, 500, err.message);
             }else{
-                res.status(200).json({ message: 'Mapel berhasil diubah', data: results });
+                return AppError(res, results, 200, 'Mapel berhasil diubah');
             }
         });
     }
     destroy(req, res) {
         const { id } = req.params;
+        const AppError = validationId(id);
+        if (AppError) {
+            return AppError(res, AppError, 400, AppError.error);
+        }
         MapelModel.deleteMapel(id, (err, results) => {
             if(err){
-                res.status(500).json({ error: err.message });
+                return AppError(res, err, 500, err.message);
             }else{
-                res.status(200).json({ message: 'Mapel berhasil dihapus', data: results });
+                return AppError(res, results, 200, 'Mapel berhasil dihapus');
             }
         });
     }
