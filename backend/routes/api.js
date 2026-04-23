@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const UserController = require('../controllers/Authtentication/UserController');
 const SiswaController = require('../controllers/Induk_Akademik/SiswaController');
 const MapelController = require('../controllers/Induk_Akademik/MapelController');
 const GuruController = require('../controllers/Induk_Akademik/GuruController');
@@ -61,6 +60,12 @@ router.get('/kehadiran', Auth, Authorize('admin', 'guru', 'siswa'), KehadiranCon
 router.post('/kehadiran', Auth, Authorize('admin', 'guru'), KehadiranController.store);
 router.put('/kehadiran/:id', Auth, Authorize('admin', 'guru'), KehadiranController.update);
 router.delete('/kehadiran/:id', Auth, Authorize('admin'), KehadiranController.destroy);
+
+// route data pengumuman
+router.get('/pengumuman', Auth, Authorize('admin', 'guru', 'siswa'), PengumumanController.index);
+router.post('/pengumuman', Auth, Authorize('admin', 'guru'), PengumumanController.store);
+router.put('/pengumuman/:id', Auth, Authorize('admin', 'guru'), PengumumanController.update);
+router.delete('/pengumuman/:id', Auth, Authorize('admin'), PengumumanController.destroy);
 
 router.post('/register', RegisterController.register);
 router.post('/login', LoginController.login);
