@@ -1,5 +1,6 @@
 const PenjadwalanModel = require('../../models/Jadwal/JadwalModel');
 const AppError = require('../../utils/AppError');
+const validationjadwal = require('../../utils/ValidationController/ValidationJadwal');
 
 class PenjadwalanController {
     
