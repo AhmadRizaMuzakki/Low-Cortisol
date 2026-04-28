@@ -14,7 +14,7 @@ class PengumumanModel {
 
     // Mengambil data pengumuman berdasarkan ID
     static getPengumumanById(id, callback) {
-        db.query('SELECT * FROM pengumuman WHERE id_pengumuman = ?', [id], (err, results) => {
+        db.query('SELECT * FROM pengumuman WHERE id = ?', [id], (err, results) => {
             if(err) {
                 callback(err, null);
             } else {
@@ -25,8 +25,8 @@ class PengumumanModel {
 
     // Menambahkan pengumuman baru
     static createPengumuman(pengumuman, callback) {
-        const query = 'INSERT INTO pengumuman (judul, deskripsi, tanggal, penulis_id) VALUES (?, ?, ?, ?)';
-        const values = [pengumuman.judul, pengumuman.deskripsi, pengumuman.tanggal, pengumuman.penulis_id];
+        const query = 'INSERT INTO pengumuman (judul, deskripsi, tanggal, id_users) VALUES (?, ?, ?, ?)';
+        const values = [pengumuman.judul, pengumuman.deskripsi, pengumuman.tanggal, pengumuman.id_users];
         db.query(query, values, (err, results) => {
             if(err) {
                 callback(err, null);    
@@ -38,8 +38,8 @@ class PengumumanModel {
 
     // Memperbarui data pengumuman berdasarkan ID
     static updatePengumuman(id, pengumuman, callback) {
-        const query = 'UPDATE pengumuman SET judul = ?, deskripsi = ?, tanggal = ?, penulis_id = ? WHERE id_pengumuman = ?';
-        const values = [pengumuman.judul, pengumuman.deskripsi, pengumuman.tanggal, pengumuman.penulis_id, id];
+        const query = 'UPDATE pengumuman SET judul = ?, deskripsi = ?, tanggal = ?, id_users = ? WHERE id = ?';
+        const values = [pengumuman.judul, pengumuman.deskripsi, pengumuman.tanggal, pengumuman.id_users, id];
         db.query(query, values, (err, results) => {
             if(err) {
                 callback(err, null);
@@ -51,7 +51,7 @@ class PengumumanModel {
 
     // Menghapus data pengumuman berdasarkan ID
     static deletePengumuman(id, callback) {
-        db.query('DELETE FROM pengumuman WHERE id_pengumuman = ?', [id], (err, results) => {
+        db.query('DELETE FROM pengumuman WHERE id = ?', [id], (err, results) => {
             if(err) {
                 callback(err, null);
             } else {

@@ -7,6 +7,7 @@ const KelasController = require('../controllers/Induk_Akademik/KelasController')
 const PenilaianController = require('../controllers/Penilaian/PenilaianController');
 const PenjadwalanController = require('../controllers/Penjadwalan/PenjadwalanController');
 const KehadiranController = require('../controllers/Kehadiran/KehadiranController');
+const PengumumanController = require('../controllers/Pengumuman/PengumumamController');
 const RegisterController = require('../controllers/Authtentication/RegisterController');
 const LoginController = require('../controllers/Authtentication/loginController');
 const Auth = require('../Middleware/auth');

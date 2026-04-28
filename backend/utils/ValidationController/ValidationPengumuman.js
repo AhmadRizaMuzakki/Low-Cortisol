@@ -8,8 +8,8 @@ function validationPengumuman(data) {
     if (!data.tanggal) {
         return { error: 'tanggal tidak boleh kosong' };
     }
-    if (!data.penulis_id) {
-        return { error: 'penulis_id tidak boleh kosong' };
+    if (!data.id_users) {
+        return { error: 'id_users tidak boleh kosong' };
     }
     return null;
 }
