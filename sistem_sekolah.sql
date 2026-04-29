@@ -435,12 +435,20 @@ ALTER TABLE `siswa`
 -- Table structure for table `pengumuman`
 --
 
+<<<<<<< HEAD
 CREATE TABLE `pengumuman` (
+=======
+CREATE TABLE pengumuman (
+>>>>>>> e304616d2c3c683b8c03cc4987054871de4439c8
     id INT AUTO_INCREMENT PRIMARY KEY,
     judul VARCHAR(255) NOT NULL,
     deskripsi TEXT NOT NULL,
     tanggal DATE NOT NULL,
+<<<<<<< HEAD
     id_users BIGINT NOT NULL,
+=======
+    penulis_id INT NOT NULL,
+>>>>>>> e304616d2c3c683b8c03cc4987054871de4439c8
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -449,15 +457,22 @@ CREATE TABLE `pengumuman` (
 -- Dumping data for table `pengumuman`
 --
 
+<<<<<<< HEAD
 INSERT INTO `pengumuman` (`judul`, `deskripsi`, `tanggal`, `id_users`) VALUES
+=======
+INSERT INTO pengumuman (judul, deskripsi, tanggal, penulis_id) VALUES
+>>>>>>> e304616d2c3c683b8c03cc4987054871de4439c8
 ('Pengumuman Pelaksanaan Ujian Sekolah', 'Ujian Sekolah (US) akan dilaksanakan pada tanggal 15-20 Mei 2026. Harap seluruh siswa mempersiapkan diri dengan baik.', '2026-04-20', 1),
 ('Libur Hari Raya Idul Fitri', 'Sehubungan dengan Hari Raya Idul Fitri, kegiatan belajar mengajar diliburkan mulai tanggal 25 April hingga 5 Mei 2026.', '2026-04-22', 1),
 ('Pendaftaran Ulang Siswa Lama', 'Diberitahukan kepada seluruh siswa kelas X dan XI untuk melakukan daftar ulang pada minggu pertama bulan Juli 2026.', '2026-04-25', 1);
 
+<<<<<<< HEAD
 ALTER TABLE `pengumuman`
   ADD KEY `id_users` (`id_users`),
   ADD CONSTRAINT `pengumuman_ibfk_1` FOREIGN KEY (`id_users`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
+=======
+>>>>>>> e304616d2c3c683b8c03cc4987054871de4439c8
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
