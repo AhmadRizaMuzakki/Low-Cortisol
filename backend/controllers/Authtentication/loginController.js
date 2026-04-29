@@ -31,7 +31,11 @@ class LoginController {
             if (!process.env.JWT_SECRET) {
                 return AppError(res, 'JWT_SECRET belum diset', 500, 'JWT_SECRET belum diset');
             }
-            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign(
+                { id: user.id, role: user.role, username: user.username },
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' }
+            );
             return AppError(res, { token }, 200, 'Login berhasil');
         });
     }
