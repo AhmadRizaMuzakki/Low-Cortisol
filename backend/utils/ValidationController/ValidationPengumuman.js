@@ -1,4 +1,7 @@
 function validationPengumuman(data) {
+    if (!data || typeof data !== 'object') {
+        return { error: 'body request tidak valid' };
+    }
     if (!data.judul) {
         return { error: 'judul tidak boleh kosong' };
     }
