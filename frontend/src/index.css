@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  --color-app-primary: #9b1c1c;
+  --color-app-primary-dark: #7a1616;
+  --color-app-secondary: #f3f4f6;
+  --color-app-navy: #1f2937;
+  --color-app-muted: #6b7280;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100dvh;
+}
