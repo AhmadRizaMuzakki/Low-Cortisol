@@ -17,7 +17,7 @@ function validationJadwal(data) {
     if (!data.jam_selesai) {
         return { error: 'jam_selesai tidak boleh kosong' };
     }
-    
+
     return null;
 }
 
