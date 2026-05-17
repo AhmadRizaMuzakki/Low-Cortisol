@@ -1,10 +1,10 @@
-function validatePenilain(data) {
+function validatePenilaian(data) {
     if (!data.id_nilai) {
         return { error: 'id_nilai tidak boleh kosong' };
     }
     if (!data.id_siswa) {
         return { error: 'id_siswa tidak boleh kosong' };
-    }   
+    }
     if (!data.id_jadwal) {
         return { error: 'id_jadwal tidak boleh kosong' };
     }
@@ -25,4 +25,4 @@ function validatePenilain(data) {
     }
     return null;
 }
-module.exports = validatePenilain;
+module.exports = validatePenilaian;

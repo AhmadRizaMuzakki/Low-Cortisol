@@ -29,9 +29,9 @@ class MapelController {
     }
     update(req, res) {
         const { id } = req.params;
-        const AppError = validationId(id);
-        if (AppError) {
-            return AppError(res, AppError, 400, AppError.error);
+        const idError = validationId(id);
+        if (idError) {
+            return AppError(res, idError, 400, idError.error);
         }
         const data = req.body;
         const bodyError = validationMapel(data);
@@ -48,9 +48,9 @@ class MapelController {
     }
     destroy(req, res) {
         const { id } = req.params;
-        const AppError = validationId(id);
-        if (AppError) {
-            return AppError(res, AppError, 400, AppError.error);
+        const idError = validationId(id);
+        if (idError) {
+            return AppError(res, idError, 400, idError.error);
         }
         MapelModel.deleteMapel(id, (err, results) => {
             if(err){

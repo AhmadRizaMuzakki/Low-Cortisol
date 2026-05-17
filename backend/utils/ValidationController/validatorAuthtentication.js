@@ -5,9 +5,6 @@ function validatorLogin(data) {
     if (!data.password) {
         return { error: 'Password tidak boleh kosong' };
     }
-    if (!data.role) {
-        return { error: 'Role tidak boleh kosong' };
-    }
     return null;
 }
 
