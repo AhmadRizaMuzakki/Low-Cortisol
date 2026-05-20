@@ -40,7 +40,7 @@ export default function Navbar({ mobileOpen = false, onNavigate }) {
 
           <div>
             <button type="button" aria-expanded={indukOpen} aria-controls="nav-induk-akademik" id="nav-induk-akademik-trigger" onClick={() => setIndukOpen((open) => !open)} className={`${linkInactive} flex w-60 items-center justify-between`}>
-       
+
               <span className="flex items-center gap-3">
                 <svg className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -78,7 +78,7 @@ export default function Navbar({ mobileOpen = false, onNavigate }) {
                   <NavLink to="/Induk_Akademik/Mapel" onClick={closeIndukAndMobile} className={({ isActive }) => (isActive ? subLinkActive : subLinkInactive)}>
                     Mapel
                   </NavLink>
-             
+
                 </div>
               </div>
             )}
@@ -90,6 +90,18 @@ export default function Navbar({ mobileOpen = false, onNavigate }) {
             </svg>
             <span>Penilaian</span>
           </NavLink>
+
+          <NavLink
+            to="/pengumuman"
+            onClick={closeMobile}
+            className={({ isActive }) => (isActive ? linkActive : linkInactive)}
+          >
+            <svg className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+            </svg>
+            <span>Pengumuman</span>
+          </NavLink>
+
         </nav>
       </div>
       <p className="border-t border-white/10 px-5 py-4 text-center text-[11px] text-white/60">© 2026 SISDA</p>

@@ -6,6 +6,7 @@ import Guru from '../pages/Induk_Akademik/Guru.jsx'
 import Siswa from '../pages/Induk_Akademik/Siswa.jsx'
 import Mapel from '../pages/Induk_Akademik/Mapel.jsx'
 import Kelas from '../pages/Induk_Akademik/Kelas.jsx'
+import PengumumanPage from '../pages/Pengumuman/PengumumanPage.jsx'
 
 export default function AppRouter() {
   return (
@@ -18,6 +19,7 @@ export default function AppRouter() {
         <Route path="/Induk_Akademik/Guru" element={<Guru />} />
         <Route path="/Induk_Akademik/Mapel" element={<Mapel />} />
         <Route path="/Induk_Akademik/Kelas" element={<Kelas />} />
+        <Route path="/pengumuman" element={<PengumumanPage />} />
       </Routes>
     </BrowserRouter>
   )
