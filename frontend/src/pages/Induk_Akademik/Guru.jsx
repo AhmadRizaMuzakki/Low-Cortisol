@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useAuth } from '../../context/AuthContext.jsx'
 import Navbar from '../../layouts/Navbar'
-import Header from '../../layouts/header'
+import Header from '../../layouts/Header'
 
 export default function Guru() {
   const { isAuthenticated } = useAuth()
