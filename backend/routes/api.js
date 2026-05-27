@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const PengumumanController = require('../controllers/Pengumuman/PengumumamController');
+const PengumumanController = require('../controllers/Pengumuman/PengumumanController');
 const SiswaController = require('../controllers/Induk_Akademik/SiswaController');
 const MapelController = require('../controllers/Induk_Akademik/MapelController');
 const GuruController = require('../controllers/Induk_Akademik/GuruController');
@@ -24,25 +24,25 @@ router.get('/', (req, res) => {
 
 
 // route data induk akademik
-router.get('/siswa', Auth, Authorize('admin', 'guru', 'siswa'), SiswaController.index);
-router.post('/siswa', Auth, Authorize('admin', 'guru'), SiswaController.store);
-router.put('/siswa/:id', Auth, Authorize('admin', 'guru'), SiswaController.update);
-router.delete('/siswa/:id', Auth, Authorize('admin'), SiswaController.destroy);
+router.get('/siswa', SiswaController.index);
+router.post('/siswa',  SiswaController.store);
+router.put('/siswa/:id',  SiswaController.update);
+router.delete('/siswa/:id',  SiswaController.destroy);
 
-router.get('/mapel', Auth, Authorize('admin', 'guru', 'siswa'), MapelController.index);
-router.post('/mapel', Auth, Authorize('admin', 'guru'), MapelController.store);
-router.put('/mapel/:id', Auth, Authorize('admin', 'guru'), MapelController.update);
-router.delete('/mapel/:id', Auth, Authorize('admin'), MapelController.destroy);
+router.get('/mapel',  MapelController.index);
+router.post('/mapel',  MapelController.store);
+router.put('/mapel/:id',  MapelController.update);
+router.delete('/mapel/:id',  MapelController.destroy);
 
-router.get('/guru', Auth, Authorize('admin', 'guru', 'siswa'), GuruController.index);
-router.post('/guru', Auth, Authorize('admin', 'guru'), GuruController.store);
-router.put('/guru/:id', Auth, Authorize('admin', 'guru'), GuruController.update);
-router.delete('/guru/:id', Auth, Authorize('admin'), GuruController.destroy);
+router.get('/guru',  GuruController.index);
+router.post('/guru',  GuruController.store);
+router.put('/guru/:id',  GuruController.update);
+router.delete('/guru/:id',  GuruController.destroy);
 
-router.get('/kelas', Auth, Authorize('admin', 'guru', 'siswa'), KelasController.index);
-router.post('/kelas', Auth, Authorize('admin', 'guru'), KelasController.store);
-router.put('/kelas/:id', Auth, Authorize('admin', 'guru'), KelasController.update);
-router.delete('/kelas/:id', Auth, Authorize('admin'), KelasController.destroy);
+router.get('/kelas',  KelasController.index);
+router.post('/kelas',  KelasController.store);
+router.put('/kelas/:id',  KelasController.update);
+router.delete('/kelas/:id',  KelasController.destroy);
 
 // route data penilaian
 router.get('/penilaian', Auth, Authorize('admin', 'guru', 'siswa'), PenilaianController.index);

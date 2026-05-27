@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Header from '../../layouts/Header';
+import Header from '../../layouts/header';
 import Navbar from '../../layouts/Navbar';
 // Jangan lupa import useAuth jika halamannya butuh proteksi login seperti di DashboardAdmin
 

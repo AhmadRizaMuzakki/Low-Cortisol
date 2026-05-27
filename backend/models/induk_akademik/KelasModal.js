@@ -2,7 +2,14 @@ const db = require('../../config/database');
 
 class KelasModel {
     static getAllKelas(callback){
-        db.query('SELECT * FROM kelas', (err, results) => {
+        db.query(
+            `SELECT 
+                k.*,
+                COALESCE(g_by_id.nama_guru, g_by_user.nama_guru) AS nama_guru
+             FROM kelas k
+             LEFT JOIN guru g_by_id ON k.id_guru_wali = g_by_id.id_guru
+             LEFT JOIN guru g_by_user ON k.id_guru_wali = g_by_user.user_id`,
+            (err, results) => {
             if(err){
                 callback(err, null);
             }else{
@@ -11,7 +18,16 @@ class KelasModel {
         });
     }
     static getKelasById(id, callback){
-        db.query('SELECT * FROM kelas WHERE id_kelas = ?', [id], (err, results) => {
+        db.query(
+            `SELECT 
+                k.*,
+                COALESCE(g_by_id.nama_guru, g_by_user.nama_guru) AS nama_guru
+             FROM kelas k
+             LEFT JOIN guru g_by_id ON k.id_guru_wali = g_by_id.id_guru
+             LEFT JOIN guru g_by_user ON k.id_guru_wali = g_by_user.user_id
+             WHERE k.id_kelas = ?`,
+            [id],
+            (err, results) => {
             if(err){
                 callback(err, null);
             }else{

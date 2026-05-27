@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import { getApiBaseUrl } from '../services/api'
@@ -11,7 +11,28 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
 
+  // Cek auth setelah render
+  useEffect(() => {
+    setCheckingAuth(false)
+  }, [])
+
+  // Loading state sambil cek auth
+  if (checkingAuth) {
+    return (
+      <div className="min-h-dvh bg-gradient-to-br from-red-50 via-white to-red-100/60 flex flex-col items-center justify-center px-4 py-10">
+        <div className="w-full max-w-md rounded-2xl border border-red-100 bg-white p-8 shadow-xl shadow-red-900/10 text-center">
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-red-600 text-xl font-bold text-white shadow-md shadow-red-600/30">
+            SD
+          </div>
+          <p className="text-slate-600">Memeriksa sesi login...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Redirect ke dashboard jika sudah login
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />
   }
@@ -20,30 +41,40 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
     setLoading(true)
+
     try {
       const res = await fetch(`${getApiBaseUrl()}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       })
-      const data = await res.json().catch(() => ({}))
-      const token =
-        (typeof data.error === 'object' && data.error?.token) || data.token
 
+      const data = await res.json().catch(() => ({}))
+      const token = (typeof data.error === 'object' && data.error?.token) || data.token
+
+      // Cek login gagal
       if (!res.ok || !token) {
         setError(
-          data.message ||
-            'Login gagal. Periksa username dan sandi, lalu coba lagi.',
+          data.message || 'Login gagal. Periksa username dan sandi, lalu coba lagi.'
         )
+        setLoading(false)
         return
       }
+
+      // Login berhasil - simpan token
       login(token)
-      navigate('/dashboard', { replace: true })
-    } catch {
+      
+      // Redirect dengan timeout kecil untuk memastikan state update
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true })
+        setLoading(false)
+      }, 100)
+
+    } catch (error) {
+      console.error('Login error:', error)
       setError(
-        'Tidak dapat menghubungi server. Pastikan API berjalan dan coba lagi.',
+        'Tidak dapat menghubungi server. Pastikan API berjalan dan coba lagi.'
       )
-    } finally {
       setLoading(false)
     }
   }

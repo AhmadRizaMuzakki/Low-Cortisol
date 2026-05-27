@@ -2,7 +2,11 @@ const db = require('../../config/database');
 
 class SiswaModel {
     static getAllSiswa(callback){
-        db.query('SELECT * FROM siswa', (err, results) => {
+        db.query(
+            `SELECT siswa.*, kelas.nama_kelas
+             FROM siswa
+             LEFT JOIN kelas ON siswa.id_kelas = kelas.id_kelas`,
+            (err, results) => {
             if(err){
                 callback(err, null);
             }else{
@@ -11,7 +15,13 @@ class SiswaModel {
         });
     }
     static getSiswaById(id, callback){
-        db.query('SELECT * FROM siswa WHERE id_siswa = ?', [id], (err, results) => {
+        db.query(
+            `SELECT siswa.*, kelas.nama_kelas
+             FROM siswa
+             LEFT JOIN kelas ON siswa.id_kelas = kelas.id_kelas
+             WHERE siswa.id_siswa = ?`,
+            [id],
+            (err, results) => {
             if(err){
                 callback(err, null);
             }else{
