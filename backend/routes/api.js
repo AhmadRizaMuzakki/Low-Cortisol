@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const PengumumanController = require('../controllers/Pengumuman/PengumumamController');
+const PengumumanController = require('../controllers/Pengumuman/PengumumanController');
 const SiswaController = require('../controllers/Induk_Akademik/SiswaController');
 const MapelController = require('../controllers/Induk_Akademik/MapelController');
 const GuruController = require('../controllers/Induk_Akademik/GuruController');
