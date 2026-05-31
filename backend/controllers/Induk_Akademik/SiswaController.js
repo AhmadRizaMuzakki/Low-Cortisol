@@ -36,6 +36,48 @@ class SiswaController {
             });
         });
     }
+    updateBiodata(req, res) {
+        const userId = req.user?.id;
+        if (!userId) {
+            return AppError(res, 'User tidak ditemukan', 401, 'User tidak ditemukan');
+        }
+        const { nisn, nama_siswa, tanggal_lahir, jenis_kelamin, alamat } = req.body || {};
+        if (!nisn || !nama_siswa || !tanggal_lahir || !jenis_kelamin || !alamat) {
+            return AppError(res, 'Semua field wajib diisi', 400, 'Semua field wajib diisi');
+        }
+        SiswaModel.getSiswaByUserId(userId, (err, results) => {
+            if (err) {
+                return AppError(res, err, 500, err.message);
+            }
+            if (!results || results.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Biodata tidak ditemukan',
+                    data: null,
+                });
+            }
+            const siswa = results[0];
+            const updateData = {
+                nisn,
+                nama_siswa,
+                tanggal_lahir,
+                jenis_kelamin,
+                alamat,
+                id_kelas: siswa.id_kelas,
+                user_id: siswa.user_id,
+            };
+            SiswaModel.updateSiswa(siswa.id_siswa, updateData, (updateErr) => {
+                if (updateErr) {
+                    return AppError(res, updateErr, 500, updateErr.message);
+                }
+                return res.status(200).json({
+                    success: true,
+                    message: 'Biodata berhasil diperbarui',
+                    data: { id_siswa: siswa.id_siswa },
+                });
+            });
+        });
+    }
     store(req, res) {
         const data = req.body;
         const error = validationSiswa(data);

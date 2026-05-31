@@ -13,6 +13,7 @@ export default function Biodata() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  
   useEffect(() => {
     async function fetchBiodata() {
       try {
@@ -29,6 +30,8 @@ export default function Biodata() {
     fetchBiodata()
   }, [])
 
+
+  
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
   }

@@ -1,11 +1,39 @@
 import { Navigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext.jsx'
 import Navbar from '../layouts/Navbar'
 import Header from '../layouts/header'
+import PengumumanComponent from '../components/SiswaDashboard/PengumumanComponent.jsx'
+import http from '../utils/http'
+
+function parsePengumumanList(payload) {
+  if (Array.isArray(payload?.data)) return payload.data
+  if (Array.isArray(payload?.error)) return payload.error
+  return []
+}
+
 export default function DashboardSiswa() {
   const { isAuthenticated } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [pengumuman, setPengumuman] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
+  const fetchPengumuman = async () => {
+    setIsLoading(true)
+    try {
+      const res = await http.get('/pengumuman')
+      setPengumuman(parsePengumumanList(res.data))
+    } catch (error) {
+      console.error('Gagal mengambil data:', error)
+      setPengumuman([])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (isAuthenticated) fetchPengumuman()
+  }, [isAuthenticated])
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
@@ -85,6 +113,7 @@ export default function DashboardSiswa() {
                 </div>
               </div>
             </div>
+            <PengumumanComponent pengumuman={pengumuman} loading={isLoading} limit={5} />
         </main>
       </div>
     </div>

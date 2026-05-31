@@ -14,6 +14,7 @@ import EditGuru from '../pages/AdminDashboard/Induk_Akademik/GuruResource/EditGu
 import TambahGuru from '../pages/AdminDashboard/Induk_Akademik/GuruResource/TambahGuru.jsx'
 import PengumumanPage from '../pages/AdminDashboard/pengumuman/PengumumanPage.jsx'
 import BiodataSiswa from '../pages/SiswaDashboard/Biodata/Biodata.jsx'
+import EditBiodata from '../pages/SiswaDashboard/Biodata/BiodataResource/EditBiodata.jsx'
 export default function AppRouter() {
   return (
     <BrowserRouter>
@@ -33,6 +34,7 @@ export default function AppRouter() {
         <Route path="/Pengumuman" element={<PengumumanPage />} />
         <Route path="/dashboard-siswa" element={<DashboardSiswa />} />
         <Route path="/dashboard-siswa/biodata" element={<BiodataSiswa />} />
+        <Route path="/dashboard-siswa/biodata/EditBiodata/:id" element={<EditBiodata />} />
         
       </Routes>
     </BrowserRouter>

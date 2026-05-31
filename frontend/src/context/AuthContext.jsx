@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react'
+import { setUnauthorizedHandler } from '../utils/http.jsx'
 
 const TOKEN_KEY = 'token'
 const ROLE_KEY = 'role'
@@ -63,6 +64,14 @@ export function AuthProvider({ children }) {
     setRoleState(null)
     setUsernameState(null)
   }, [])
+
+  useEffect(() => {
+    setUnauthorizedHandler(() => {
+      logout()
+      window.location.href = '/login'
+    })
+    return () => setUnauthorizedHandler(null)
+  }, [logout])
 
   const value = useMemo(
     () => ({
