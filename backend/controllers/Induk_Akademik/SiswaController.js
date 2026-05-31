@@ -13,6 +13,29 @@ class SiswaController {
             }
         });
     }
+    show(req, res) {
+        const userId = req.user?.id;
+        if (!userId) {
+            return AppError(res, 'User tidak ditemukan', 401, 'User tidak ditemukan');
+        }
+        SiswaModel.getSiswaByUserId(userId, (err, results) => {
+            if (err) {
+                return AppError(res, err, 500, err.message);
+            }
+            if (!results || results.length === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Biodata tidak ditemukan',
+                    data: null,
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                message: 'Biodata berhasil diambil',
+                data: results[0],
+            });
+        });
+    }
     store(req, res) {
         const data = req.body;
         const error = validationSiswa(data);

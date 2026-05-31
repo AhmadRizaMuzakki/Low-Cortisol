@@ -1,10 +1,10 @@
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useAuth } from '../../context/AuthContext.jsx'
-import Navbar from '../../layouts/Navbar'
-import Header from '../../layouts/header'
-import SiswaComponent from '../../components/Induk_Akademik/SiswaComponent.jsx'
-import { getSiswa } from '../../utils/Induk_Akademik/SiswaUtils.jsx'
+import { useAuth } from '../../../context/AuthContext.jsx'
+import Navbar from '../../../layouts/Navbar'
+import Header from '../../../layouts/header'
+import SiswaComponent from '../../../components/Induk_Akademik/SiswaComponent.jsx'
+import { getSiswa } from '../../../utils/Induk_Akademik/SiswaUtils.jsx'
 import TambahSiswa from './SiswaResource/TambahSiswa.jsx'
 
 function parseSiswaList(payload) {

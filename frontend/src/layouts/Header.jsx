@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
-
+import { useNavigate } from 'react-router-dom'
 export default function Header({ onOpenSidebar }) {
   const [dropdownToggle, setDropdownToggle] = useState(false)
   const { logout } = useAuth()
+  const { username, role } = useAuth()
+  const navigate = useNavigate()
   function handleLogout() {
-    localStorage.removeItem('token')
-    window.location.href = '/login'
+    logout()
+    navigate('/login')
   }
   return (
     <header className="shrink-0 border-b border-gray-200/80 bg-white px-4 py-3 shadow-sm sm:px-6">
@@ -64,23 +66,26 @@ export default function Header({ onOpenSidebar }) {
               className="flex items-center gap-3 rounded-xl border border-gray-100 bg-gray-50/80 py-1 pr-2 pl-1 transition-colors hover:bg-gray-100"
             >
               <div className="hidden text-right sm:block">
-                <p className="text-sm font-semibold leading-tight text-app-navy">Admin Utama</p>
+                <p className="text-sm font-semibold leading-tight text-app-navy">{username}</p>
               </div>
               <div
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-app-primary text-sm font-bold text-white ring-2 ring-white"
                 aria-hidden="true"
               >
-                AS
+                {role === 'admin' ? 'AD' : role === 'guru' ? 'GU' : 'ST'}
               </div>
             </button>
             {dropdownToggle && (
               <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border border-gray-200 bg-white shadow-lg z-10">
-                <ul className="py-1">
-                  <button onClick={handleLogout} className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
-                    Logout
-                  </button>
+                <ul className="py-1 flex flex-col gap-2 items-center justify-center">
+                  <li className="w-full flex justify-center">
+                    <button onClick={handleLogout} className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer flex justify-center">
+                      Logout
+                    </button>
+                  </li>
                 </ul>
               </div>
+         
             )}
           </div>
         </div>

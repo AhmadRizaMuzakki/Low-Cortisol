@@ -1,16 +1,36 @@
 import { Navigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext.jsx'
 import Navbar from '../layouts/Navbar'
 import Header from '../layouts/header'
+import http from '../utils/http'
 export default function DashboardAdmin() {
   const { isAuthenticated } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
+  const [guruCount, setGuruCount] = useState(0)
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
   }
 
+  useEffect(() => {
+    const fetchGuruCount = async () => {
+      try {
+        const response = await http.get('/guru')
+        const dataGuru = response.data?.data
+
+        let jumlahGuru = 0
+        if (Array.isArray(dataGuru)) {
+          jumlahGuru = dataGuru.length
+        }
+
+        setGuruCount(jumlahGuru)
+      } catch (error) {
+        console.error('Gagal mengambil jumlah guru:', error)
+        setGuruCount(0)
+      }
+    }
+    fetchGuruCount()
+  }, [])
   return (
     <div className="flex h-screen min-h-0 bg-app-secondary text-app-navy">
       {sidebarOpen && (
@@ -63,7 +83,7 @@ export default function DashboardAdmin() {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-sm font-medium text-app-muted">Guru & Staf</p>
-                    <p className="mt-1 text-3xl font-bold text-app-navy">42</p>
+                    <p className="mt-1 text-3xl font-bold text-app-navy">{guruCount}</p>
                     <p className="mt-2 text-xs text-app-muted">Aktif Semester ini</p>
                   </div>
                   <div className="rounded-xl bg-app-primary/10 p-3 text-app-primary">

@@ -1,39 +1,21 @@
-import { useState, useEffect } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import http from '../utils/http.jsx'
 
-export default function LoginPage() {
-  const { isAuthenticated, login } = useAuth()
+export default function RegisterPage() {
   const navigate = useNavigate()
-  const [formData, setFormData] = useState({ username: '', password: '' })
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    role: 'siswa',
+  })
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [checkingAuth, setCheckingAuth] = useState(true)
 
   function handleChange(e) {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
-  }
-
-  // Cek auth setelah render
-  useEffect(() => {
-    setCheckingAuth(false)
-  }, [])
-
-  // Loading state sambil cek auth
-  if (checkingAuth) {
-    return (
-      <div className="min-h-dvh bg-gradient-to-br from-red-50 via-white to-red-100/60 flex flex-col items-center justify-center px-4 py-10">
-        <div className="w-full max-w-md rounded-2xl border border-red-100 bg-white p-8 shadow-xl shadow-red-900/10 text-center">
-          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-red-600 text-xl font-bold text-white shadow-md shadow-red-600/30">
-            SD
-          </div>
-          <p className="text-slate-600">Memeriksa sesi login...</p>
-        </div>
-      </div>
-    )
   }
 
   async function handleSubmit(e) {
@@ -41,7 +23,7 @@ export default function LoginPage() {
     setError('')
     setLoading(true)
 
-    const { username, password } = formData
+    const { username, password, role } = formData
     if (!username || !password) {
       setError('Username dan password wajib diisi!')
       setLoading(false)
@@ -49,30 +31,22 @@ export default function LoginPage() {
     }
 
     try {
-      const response = await http.post('/login', { username, password })
-      const result = response.data
-      const token = result.data?.token || result.token
+      const payload = { username, password, role }
+      const response = await http.post('/register', payload)
 
-      if (token) {
-        const userRole = result.data?.user?.role
-        const userName = result.data?.user?.username
-        login(token, userName, userRole)
-        alert('Login Berhasil!')
-        if (userRole === 'admin' || userRole === 'guru') {
-          navigate('/dashboard', { replace: true })
-        } else if (userRole === 'siswa') {
-          navigate('/dashboard-siswa', { replace: true })
-        } else {
-          setError('Role tidak dikenali.')
-        }
+      if (response.status === 201 || response.status === 200) {
+        alert('Pendaftaran berhasil! Silakan login.')
+        navigate('/login')
       } else {
-        setError('Token tidak ditemukan dalam respon server.')
+        setError(response.data?.message || 'Gagal mendaftar.')
       }
     } catch (err) {
       if (err.response?.data?.message) {
         setError(err.response.data.message)
       } else {
-        setError('Gagal masuk, periksa koneksi atau akun Anda.')
+        setError(
+          'Gagal mendaftar, username mungkin sudah digunakan atau periksa koneksi Anda.',
+        )
       }
     } finally {
       setLoading(false)
@@ -86,7 +60,7 @@ export default function LoginPage() {
           <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl bg-red-600 text-xl font-bold text-white shadow-md shadow-red-600/30">
             SD
           </div>
-          <h1 className="text-2xl font-bold text-red-900">Masuk</h1>
+          <h1 className="text-2xl font-bold text-red-900">Daftar</h1>
           <p className="mt-1 text-sm text-slate-600">
             Portal SD Negeri 1 Merah Putih
           </p>
@@ -134,7 +108,7 @@ export default function LoginPage() {
                 id="password"
                 name="password"
                 type={showPassword ? 'text' : 'password'}
-                autoComplete="current-password"
+                autoComplete="new-password"
                 value={formData.password}
                 onChange={handleChange}
                 className="w-full rounded-lg border border-slate-200 px-3 py-2.5 pr-11 text-slate-900 outline-none ring-red-500/30 transition focus:border-red-500 focus:ring-2"
@@ -151,19 +125,38 @@ export default function LoginPage() {
             </div>
           </div>
 
+          <div>
+            <label
+              htmlFor="role"
+              className="mb-1 block text-sm font-medium text-slate-700"
+            >
+              Peran
+            </label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-slate-900 outline-none ring-red-500/30 transition focus:border-red-500 focus:ring-2"
+            >
+              <option value="siswa">Siswa</option>
+              <option value="guru">Guru</option>
+            </select>
+          </div>
+
           <button
             type="submit"
             disabled={loading}
             className="w-full rounded-lg bg-red-600 py-3 text-sm font-semibold text-white shadow-md shadow-red-600/25 transition hover:bg-red-700 disabled:opacity-60"
           >
-            {loading ? 'Memproses…' : 'Masuk'}
+            {loading ? 'Memproses…' : 'Daftar'}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-600">
-          Belum punya akun?{' '}
-          <Link to="/register" className="font-medium text-red-700 hover:underline">
-            Daftar
+          Sudah punya akun?{' '}
+          <Link to="/login" className="font-medium text-red-700 hover:underline">
+            Masuk
           </Link>
         </p>
 

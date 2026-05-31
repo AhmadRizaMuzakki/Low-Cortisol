@@ -1,13 +1,20 @@
 import { useState, useEffect } from 'react';
-import Header from '../../layouts/header';
-import Navbar from '../../layouts/Navbar';
+import Header from '../../../layouts/header.jsx';
+import Navbar from '../../../layouts/Navbar.jsx';
+import { useAuth } from '../../../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 // Jangan lupa import useAuth jika halamannya butuh proteksi login seperti di DashboardAdmin
 
 export default function PengumumanPage() {
     const [pengumuman, setPengumuman] = useState([]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const { isAuthenticated } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/login');
+        }
     }, []);
 
     return (
