@@ -27,21 +27,25 @@ router.get('/', (req, res) => {
 router.get('/siswa/biodata', Auth, Authorize('siswa'), SiswaController.show);
 router.put('/siswa/biodata', Auth, Authorize('siswa'), SiswaController.updateBiodata);
 router.get('/siswa', Auth, Authorize('admin', 'guru'), SiswaController.index);
+router.get('/siswa/:id', Auth, Authorize('admin', 'guru'), SiswaController.showById);
 router.post('/siswa', Auth, Authorize('admin', 'guru'), SiswaController.store);
 router.put('/siswa/:id', Auth, Authorize('admin', 'guru'), SiswaController.update);
 router.delete('/siswa/:id', Auth, Authorize('admin', 'guru'), SiswaController.destroy);
 
 router.get('/mapel', Auth, Authorize('admin', 'guru'), MapelController.index);
+router.get('/mapel/:id', Auth, Authorize('admin', 'guru'), MapelController.show);
 router.post('/mapel', Auth, Authorize('admin', 'guru'), MapelController.store);
 router.put('/mapel/:id', Auth, Authorize('admin', 'guru'), MapelController.update);
 router.delete('/mapel/:id', Auth, Authorize('admin', 'guru'), MapelController.destroy);
 
 router.get('/guru', Auth, Authorize('admin', 'guru'), GuruController.index);
+router.get('/guru/:id', Auth, Authorize('admin', 'guru'), GuruController.show);
 router.post('/guru', Auth, Authorize('admin', 'guru'), GuruController.store);
 router.put('/guru/:id', Auth, Authorize('admin', 'guru'), GuruController.update);
 router.delete('/guru/:id', Auth, Authorize('admin', 'guru'), GuruController.destroy);
 
 router.get('/kelas', Auth, Authorize('admin', 'guru'), KelasController.index);
+router.get('/kelas/:id', Auth, Authorize('admin', 'guru'), KelasController.show);
 router.post('/kelas', Auth, Authorize('admin', 'guru'), KelasController.store);
 router.put('/kelas/:id', Auth, Authorize('admin', 'guru'), KelasController.update);
 router.delete('/kelas/:id', Auth, Authorize('admin', 'guru'), KelasController.destroy);

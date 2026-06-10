@@ -4,38 +4,40 @@ import { useAuth } from '../../../context/AuthContext.jsx'
 import Navbar from '../../../layouts/Navbar'
 import Header from '../../../layouts/header'
 import { getGuru } from '../../../utils/Induk_Akademik/GuruUtils.jsx'
-import GuruComponent from '../../../components/Induk_Akademik/GuruComponent.jsx'
+import TeacherTable from '../../../components/Induk_Akademik/GuruComponent.jsx'
+import { parseListResponse } from '../../../utils/Induk_Akademik/apiHelpers'
 
 export default function Guru() {
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [guruList, setGuruList] = useState([])
+  const [itemList, setItemList] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  function parseGuruList(payload) {
-    if (Array.isArray(payload?.data)) return payload.data
-    if (Array.isArray(payload?.error)) return payload.error
-    return []
+  async function fetchList() {
+    setLoading(true)
+    setError(null)
+    try {
+      const response = await getGuru()
+      setItemList(parseListResponse(response.data))
+    } catch (err) {
+      console.error('Error fetching guru:', err)
+      setError('Gagal memuat data guru.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
-    async function fetchGuru() {
-      try {
-        const response = await getGuru()
-        setGuruList(parseGuruList(response.data))
-      } catch (err) {
-        console.error('Error fetching guru:', err)
-        setError('Gagal memuat data guru.')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchGuru()
+    fetchList()
   }, [])
 
-  function handleTambahGuru() {
+  function handleItemDeleted(id) {
+    setItemList((prev) => prev.filter((item) => item.id_guru !== id))
+  }
+
+  function handleNavigateToCreate() {
     navigate('/Induk_Akademik/GuruResource/TambahGuru')
   }
 
@@ -62,9 +64,13 @@ export default function Guru() {
         <main className="min-h-0 flex-1 overflow-y-auto">
           <div className="mx-auto max-w-[1600px] space-y-6 px-4 py-6 sm:px-6 lg:py-8">
             <h1 className="text-xl font-bold tracking-tight text-app-navy sm:text-2xl">Data Guru</h1>
-          <button onClick={handleTambahGuru} className="btn btn-primary">Tambah Guru</button>
-          <GuruComponent guruList={guruList} loading={loading} error={error} />
-
+            <button onClick={handleNavigateToCreate} className="btn btn-primary">Tambah Guru</button>
+            <TeacherTable
+              itemList={itemList}
+              loading={loading}
+              error={error}
+              onItemDeleted={handleItemDeleted}
+            />
           </div>
         </main>
       </div>

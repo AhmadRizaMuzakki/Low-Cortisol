@@ -21,6 +21,16 @@ class UserModel {
             }
         });
     }
+    static deleteUser(id, callback) {
+        const query = 'DELETE FROM users WHERE id = ?';
+        db.query(query, [id], (err, results) => {
+            if (err) {
+                callback(err, null);
+            } else {
+                callback(null, results);
+            }
+        });
+    }
 }
 
 module.exports = UserModel;

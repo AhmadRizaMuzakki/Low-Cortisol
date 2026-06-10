@@ -1,42 +1,39 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { getApiBaseUrl, getAuthHeaders, mapGenderToForm } from '../../../../utils/Induk_Akademik/apiHelpers'
 
-export default function EditSiswa() {
+export default function EditGuru() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [form, setForm] = useState({
-    nisn: '',
-    nama_siswa: '',
-    tanggal_lahir: '',
+    nip: '',
+    nama_guru: '',
     jenis_kelamin: '',
-    alamat: '',
-    id_kelas: '',
+    no_hp: '',
+    user_id: '',
   })
+
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
-  const [kelasList, setKelasList] = useState([])
+  const [success, setSuccess] = useState('')
 
   useEffect(() => {
     setLoading(true)
-    // Fetch data siswa
-    fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api/siswa/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-      }
-    })
+    // Fetch data guru by id
+    fetch(`${getApiBaseUrl()}/api/guru/${id}`, { headers: getAuthHeaders() })
       .then(res => {
-        if (!res.ok) throw new Error('Data siswa tidak ditemukan')
+        if (!res.ok) throw new Error('Data guru tidak ditemukan')
         return res.json()
       })
-      .then(data => {
+      .then((payload) => {
+        const data = payload?.data ?? payload
         setForm({
-          nisn: data.nisn ?? '',
-          nama_siswa: data.nama_siswa ?? '',
-          tanggal_lahir: data.tanggal_lahir ?? '',
-          jenis_kelamin: data.jenis_kelamin ?? '',
-          alamat: data.alamat ?? '',
-          id_kelas: data.id_kelas ?? '',
+          nip: data.nip ?? '',
+          nama_guru: data.nama_guru ?? '',
+          jenis_kelamin: mapGenderToForm(data.jenis_kelamin),
+          no_hp: data.no_hp ?? '',
+          user_id: data.user_id ?? '',
         })
         setLoading(false)
       })
@@ -44,16 +41,6 @@ export default function EditSiswa() {
         setError(err.message)
         setLoading(false)
       })
-
-    // Fetch daftar kelas
-    fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api/kelas`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-      }
-    })
-      .then(res => res.json())
-      .then(data => setKelasList(data))
-      .catch(() => setKelasList([]))
   }, [id])
 
   function handleChange(e) {
@@ -65,26 +52,26 @@ export default function EditSiswa() {
     e.preventDefault()
     setSubmitting(true)
     setError('')
+    setSuccess('')
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || ''}/api/siswa/${id}`, {
+      const res = await fetch(`${getApiBaseUrl()}/api/guru/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-        },
+        headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(form)
       })
 
+      const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        setError(data.message || 'Gagal mengubah data siswa')
+        setError(data.message || 'Gagal mengubah data guru')
         setSubmitting(false)
         return
       }
 
-      // Success, kembali ke halaman daftar siswa
-      navigate('/induk-akademik/siswa')
+      setSuccess('Guru berhasil diupdate')
+      setTimeout(() => {
+        navigate('/Induk_Akademik/Guru')
+      }, 1200)
     } catch (err) {
       setError('Gagal terhubung ke server')
       setSubmitting(false)
@@ -95,7 +82,7 @@ export default function EditSiswa() {
     return (
       <div className="flex items-center justify-center min-h-[40vh]">
         <span className="loading loading-dots loading-lg" />
-        <span className="ml-2 text-app-muted">Memuat data siswa...</span>
+        <span className="ml-2 text-app-muted">Memuat data guru...</span>
       </div>
     )
   }
@@ -111,43 +98,30 @@ export default function EditSiswa() {
 
   return (
     <div className="max-w-xl mx-auto py-8 px-4">
-      <h2 className="text-2xl font-bold mb-6">Edit Siswa</h2>
+      <h2 className="text-2xl font-bold mb-6">Edit Guru</h2>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <label className="label">
-            <span className="label-text">NISN</span>
+            <span className="label-text">NIP</span>
           </label>
           <input
             type="text"
-            name="nisn"
+            name="nip"
             className="input input-bordered w-full"
-            value={form.nisn}
+            value={form.nip}
             onChange={handleChange}
             required
           />
         </div>
         <div>
           <label className="label">
-            <span className="label-text">Nama Siswa</span>
+            <span className="label-text">Nama Guru</span>
           </label>
           <input
             type="text"
-            name="nama_siswa"
+            name="nama_guru"
             className="input input-bordered w-full"
-            value={form.nama_siswa}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label className="label">
-            <span className="label-text">Tanggal Lahir</span>
-          </label>
-          <input
-            type="date"
-            name="tanggal_lahir"
-            className="input input-bordered w-full"
-            value={form.tanggal_lahir}
+            value={form.nama_guru}
             onChange={handleChange}
             required
           />
@@ -163,42 +137,26 @@ export default function EditSiswa() {
             onChange={handleChange}
             required
           >
-            <option value="">Pilih</option>
+            <option value="">Pilih Jenis Kelamin</option>
             <option value="Laki-laki">Laki-laki</option>
             <option value="Perempuan">Perempuan</option>
           </select>
         </div>
         <div>
           <label className="label">
-            <span className="label-text">Alamat</span>
+            <span className="label-text">No HP</span>
           </label>
-          <textarea
-            name="alamat"
-            className="textarea textarea-bordered w-full"
-            value={form.alamat}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label className="label">
-            <span className="label-text">Kelas</span>
-          </label>
-          <select
-            name="id_kelas"
-            className="select select-bordered w-full"
-            value={form.id_kelas}
+          <input
+            type="text"
+            name="no_hp"
+            className="input input-bordered w-full"
+            value={form.no_hp}
             onChange={handleChange}
             required
-          >
-            <option value="">Pilih Kelas</option>
-            {kelasList.map((kelas) => (
-              <option key={kelas.id_kelas} value={kelas.id_kelas}>
-                {kelas.nama_kelas}
-              </option>
-            ))}
-          </select>
+          />
         </div>
         {error && <div className="alert alert-error">{error}</div>}
+        {success && <div className="alert alert-success">{success}</div>}
         <div className="flex gap-2 justify-end">
           <button
             type="submit"
@@ -210,7 +168,7 @@ export default function EditSiswa() {
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/Induk_Akademik/Guru')}
             disabled={submitting}
           >
             Batal

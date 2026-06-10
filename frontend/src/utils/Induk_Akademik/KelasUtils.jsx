@@ -12,3 +12,6 @@ export function createKelas(kelas) {
 export function updateKelas(id, kelas) {
     return http.put(`/kelas/${id}`, kelas);
 }
+export function deleteKelas(id) {
+    return http.delete(`/kelas/${id}`);
+}

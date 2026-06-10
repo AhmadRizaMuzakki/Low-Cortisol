@@ -12,6 +12,10 @@ import EditSiswa from '../pages/AdminDashboard/Induk_Akademik/SiswaResource/Edit
 import TambahSiswa from '../pages/AdminDashboard/Induk_Akademik/SiswaResource/TambahSiswa.jsx'
 import EditGuru from '../pages/AdminDashboard/Induk_Akademik/GuruResource/EditGuru.jsx'
 import TambahGuru from '../pages/AdminDashboard/Induk_Akademik/GuruResource/TambahGuru.jsx'
+import TambahMapel from '../pages/AdminDashboard/Induk_Akademik/MapelResource/TambahMapel.jsx'
+import EditMapel from '../pages/AdminDashboard/Induk_Akademik/MapelResource/EditMapel.jsx'
+import TambahKelas from '../pages/AdminDashboard/Induk_Akademik/KelasResource/TambahKelas.jsx'
+import EditKelas from '../pages/AdminDashboard/Induk_Akademik/KelasResource/EditKelas.jsx'
 import PengumumanPage from '../pages/AdminDashboard/pengumuman/PengumumanPage.jsx'
 import BiodataSiswa from '../pages/SiswaDashboard/Biodata/Biodata.jsx'
 import EditBiodata from '../pages/SiswaDashboard/Biodata/BiodataResource/EditBiodata.jsx'
@@ -30,7 +34,11 @@ export default function AppRouter() {
         <Route path="/Induk_Akademik/SiswaResource/EditSiswa/:id" element={<EditSiswa />} />
         <Route path="/Induk_Akademik/SiswaResource/TambahSiswa" element={<TambahSiswa />} />
         <Route path="/Induk_Akademik/Mapel" element={<MapelAdmin />} />
+        <Route path="/Induk_Akademik/MapelResource/TambahMapel" element={<TambahMapel />} />
+        <Route path="/Induk_Akademik/MapelResource/EditMapel/:id" element={<EditMapel />} />
         <Route path="/Induk_Akademik/Kelas" element={<KelasAdmin />} />
+        <Route path="/Induk_Akademik/KelasResource/TambahKelas" element={<TambahKelas />} />
+        <Route path="/Induk_Akademik/KelasResource/EditKelas/:id" element={<EditKelas />} />
         <Route path="/Pengumuman" element={<PengumumanPage />} />
         <Route path="/dashboard-siswa" element={<DashboardSiswa />} />
         <Route path="/dashboard-siswa/biodata" element={<BiodataSiswa />} />

@@ -1,9 +1,9 @@
 const AppError = (res, error, status, message) => {
-    console.log(error);
+    if (error) console.log(error);
     res.status(status).json({
         success: false,
         message: message,
-        error: error.message || error
+        error: error?.message ?? error ?? null,
     });
 }
 
