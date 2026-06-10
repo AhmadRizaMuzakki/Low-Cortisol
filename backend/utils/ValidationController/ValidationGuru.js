@@ -1,4 +1,4 @@
-function ValidationGuru(data) {
+function ValidationGuru(data, { isCreate = false } = {}) {
     if (!data.nip) {
         return { error: 'NIP guru tidak boleh kosong' };
     }
@@ -11,8 +11,16 @@ function ValidationGuru(data) {
     if (!data.no_hp) {
         return { error: 'No HP guru tidak boleh kosong' };
     }
-    if (!data.user_id) {
-        return { error: 'User ID guru tidak boleh kosong' };
+    if (isCreate) {
+        if (!data.username) {
+            return { error: 'Username tidak boleh kosong' };
+        }
+        if (!data.password) {
+            return { error: 'Password tidak boleh kosong' };
+        }
+        if (!data.role) {
+            return { error: 'Role tidak boleh kosong' };
+        }
     }
     return null;
 }
