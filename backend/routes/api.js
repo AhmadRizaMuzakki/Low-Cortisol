@@ -30,6 +30,7 @@ router.get('/siswa/kelas', Auth, Authorize('siswa'), SiswaController.showKelas);
 router.get('/siswa/presensi/hari-ini', Auth, Authorize('siswa'), SiswaController.showPresensiHariIni);
 router.get('/siswa/presensi', Auth, Authorize('siswa'), SiswaController.showPresensi);
 router.post('/siswa/presensi', Auth, Authorize('siswa'), SiswaController.storePresensi);
+router.get('/siswa/nilai', Auth, Authorize('siswa'), SiswaController.showNilai);
 router.get('/siswa', Auth, Authorize('admin', 'guru'), SiswaController.index);
 router.get('/siswa/:id', Auth, Authorize('admin', 'guru'), SiswaController.showById);
 router.post('/siswa', Auth, Authorize('admin', 'guru'), SiswaController.store);

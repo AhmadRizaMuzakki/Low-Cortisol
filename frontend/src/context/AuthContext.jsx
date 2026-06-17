@@ -14,26 +14,54 @@ const USERNAME_KEY = 'username'
 
 const AuthContext = createContext(null)
 
-function getRoleFromToken(token) {
+function getTokenPayload(token) {
   if (!token) return null
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
-    return payload.role ?? null
+    return JSON.parse(atob(token.split('.')[1]))
   } catch {
     return null
   }
 }
 
-function readStoredRole() {
-  const stored = localStorage.getItem(ROLE_KEY)
-  if (stored) return stored
-  return getRoleFromToken(localStorage.getItem(TOKEN_KEY))
+function getRoleFromToken(token) {
+  return getTokenPayload(token)?.role ?? null
+}
+
+function isTokenExpired(token) {
+  const payload = getTokenPayload(token)
+  if (!payload?.exp) return false
+  return Date.now() >= payload.exp * 1000
+}
+
+function readStoredAuth() {
+  const storedToken = localStorage.getItem(TOKEN_KEY)
+  if (!storedToken || isTokenExpired(storedToken)) {
+    localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(ROLE_KEY)
+    localStorage.removeItem(USERNAME_KEY)
+    return { token: null, role: null, username: null }
+  }
+  const storedRole = localStorage.getItem(ROLE_KEY)
+  return {
+    token: storedToken,
+    role: storedRole || getRoleFromToken(storedToken),
+    username: localStorage.getItem(USERNAME_KEY),
+  }
+}
+
+let cachedInitialAuth
+
+function getInitialAuth() {
+  if (!cachedInitialAuth) {
+    cachedInitialAuth = readStoredAuth()
+  }
+  return cachedInitialAuth
 }
 
 export function AuthProvider({ children }) {
-  const [token, setTokenState] = useState(() => localStorage.getItem(TOKEN_KEY))
-  const [role, setRoleState] = useState(readStoredRole)
-  const [username, setUsernameState] = useState(localStorage.getItem(USERNAME_KEY))
+  const [token, setTokenState] = useState(() => getInitialAuth().token)
+  const [role, setRoleState] = useState(() => getInitialAuth().role)
+  const [username, setUsernameState] = useState(() => getInitialAuth().username)
   useEffect(() => {
     const onStorage = (e) => {
       if (e.key === TOKEN_KEY) setTokenState(e.newValue)
