@@ -71,6 +71,33 @@ class SiswaController {
         });
     }
 
+    showKelas(req, res) {
+        const userId = req.user?.id;
+        if (!userId) {
+            return AppError(res, 'User tidak ditemukan', 401, 'User tidak ditemukan');
+        }
+
+        SiswaModel.getKelasDetailByUserId(userId, (err, results) => {
+            if (err) {
+                return AppError(res, err, 500, err.message);
+            }
+
+            if (!results?.nama_kelas) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Data kelas tidak ditemukan',
+                    data: null,
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: 'Data kelas berhasil diambil',
+                data: results,
+            });
+        });
+    }
+
     updateBiodata(req, res) {
         const userId = req.user?.id;
         if (!userId) {

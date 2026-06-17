@@ -26,6 +26,7 @@ router.get('/', (req, res) => {
 // route data induk akademik
 router.get('/siswa/biodata', Auth, Authorize('siswa'), SiswaController.show);
 router.put('/siswa/biodata', Auth, Authorize('siswa'), SiswaController.updateBiodata);
+router.get('/siswa/kelas', Auth, Authorize('siswa'), SiswaController.showKelas);
 router.get('/siswa', Auth, Authorize('admin', 'guru'), SiswaController.index);
 router.get('/siswa/:id', Auth, Authorize('admin', 'guru'), SiswaController.showById);
 router.post('/siswa', Auth, Authorize('admin', 'guru'), SiswaController.store);

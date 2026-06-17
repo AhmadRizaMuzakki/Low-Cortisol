@@ -23,7 +23,6 @@ export default function PengumumanPage() {
     judul: '',
     deskripsi: '',
     tanggal: '',
-    penulis_id: 1,
   })
 
   const fetchPengumuman = async () => {
@@ -45,7 +44,7 @@ export default function PengumumanPage() {
 
   const handleOpenAdd = () => {
     setEditingId(null)
-    setFormData({ judul: '', deskripsi: '', tanggal: '', penulis_id: 1 })
+    setFormData({ judul: '', deskripsi: '', tanggal: '' })
     setIsModalOpen(true)
   }
 
@@ -56,7 +55,6 @@ export default function PengumumanPage() {
       judul: item.judul,
       deskripsi: item.deskripsi,
       tanggal: formattedDate,
-      penulis_id: item.penulis_id,
     })
     setIsModalOpen(true)
   }

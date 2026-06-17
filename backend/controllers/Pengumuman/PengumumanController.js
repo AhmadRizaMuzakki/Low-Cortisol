@@ -14,7 +14,7 @@ class PengumumanController {
         });
     }
     store(req, res) {
-        const data = req.body;
+        const data = { ...req.body, id_users: req.user.id };
         const error = validationPengumuman(data);
         if (error) {
             return AppError(res, error, 400, error.error);
@@ -33,7 +33,7 @@ class PengumumanController {
         if (idError) {
             return AppError(res, idError, 400, idError.error);
         }
-        const data = req.body;
+        const data = { ...req.body, id_users: req.user.id };
         const bodyError = validationPengumuman(data);
         if (bodyError) {
             return AppError(res, bodyError, 400, bodyError.error);
