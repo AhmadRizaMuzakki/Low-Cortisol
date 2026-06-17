@@ -440,16 +440,17 @@ CREATE TABLE pengumuman (
     judul VARCHAR(255) NOT NULL,
     deskripsi TEXT NOT NULL,
     tanggal DATE NOT NULL,
-    penulis_id INT NOT NULL,
+    id_users BIGINT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pengumuman_ibfk_1 FOREIGN KEY (id_users) REFERENCES users (id)
 );
 
 --
 -- Dumping data for table `pengumuman`
 --
 
-INSERT INTO pengumuman (judul, deskripsi, tanggal, penulis_id) VALUES
+INSERT INTO pengumuman (judul, deskripsi, tanggal, id_users) VALUES
 ('Pengumuman Pelaksanaan Ujian Sekolah', 'Ujian Sekolah (US) akan dilaksanakan pada tanggal 15-20 Mei 2026. Harap seluruh siswa mempersiapkan diri dengan baik.', '2026-04-20', 1),
 ('Libur Hari Raya Idul Fitri', 'Sehubungan dengan Hari Raya Idul Fitri, kegiatan belajar mengajar diliburkan mulai tanggal 25 April hingga 5 Mei 2026.', '2026-04-22', 1),
 ('Pendaftaran Ulang Siswa Lama', 'Diberitahukan kepada seluruh siswa kelas X dan XI untuk melakukan daftar ulang pada minggu pertama bulan Juli 2026.', '2026-04-25', 1);

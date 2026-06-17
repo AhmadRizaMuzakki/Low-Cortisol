@@ -74,6 +74,31 @@ class PenjadwalanModel {
             }
         });
     }
+
+    static getJadwalDetailByKelasId(idKelas, callback) {
+        db.query(
+            `SELECT
+                jp.id_jadwal,
+                jp.hari,
+                jp.jam_mulai,
+                jp.jam_selesai,
+                m.nama_mapel,
+                g.nama_guru
+             FROM jadwal_pelajaran jp
+             INNER JOIN mapel m ON jp.id_mapel = m.id_mapel
+             INNER JOIN guru g ON jp.id_guru = g.id_guru
+             WHERE jp.id_kelas = ?
+             ORDER BY FIELD(jp.hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jp.jam_mulai`,
+            [idKelas],
+            (err, results) => {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, results || []);
+                }
+            }
+        );
+    }
 }
 
 module.exports = PenjadwalanModel;

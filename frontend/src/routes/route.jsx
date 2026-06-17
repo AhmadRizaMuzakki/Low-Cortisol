@@ -19,6 +19,7 @@ import EditKelas from '../pages/AdminDashboard/Induk_Akademik/KelasResource/Edit
 import PengumumanPage from '../pages/AdminDashboard/pengumuman/PengumumanPage.jsx'
 import BiodataSiswa from '../pages/SiswaDashboard/Biodata/Biodata.jsx'
 import EditBiodata from '../pages/SiswaDashboard/Biodata/BiodataResource/EditBiodata.jsx'
+import KelasSiswa from '../pages/SiswaDashboard/KelasSiswa.jsx'
 export default function AppRouter() {
   return (
     <BrowserRouter>
@@ -43,7 +44,7 @@ export default function AppRouter() {
         <Route path="/dashboard-siswa" element={<DashboardSiswa />} />
         <Route path="/dashboard-siswa/biodata" element={<BiodataSiswa />} />
         <Route path="/dashboard-siswa/biodata/EditBiodata/:id" element={<EditBiodata />} />
-        
+        <Route path="/dashboard-siswa/kelas" element={<KelasSiswa />} />
       </Routes>
     </BrowserRouter>
   )
