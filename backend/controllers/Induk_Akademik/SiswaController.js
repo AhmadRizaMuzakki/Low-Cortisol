@@ -1,7 +1,10 @@
 const bcrypt = require('bcryptjs');
 const SiswaModel = require('../../models/induk_akademik/SiswaModel');
 const KehadiranModel = require('../../models/Kehadiran/KehadiranModel');
+<<<<<<< HEAD
 const PenilaianModel = require('../../models/Penilaian/PenilaianModel');
+=======
+>>>>>>> 0a1e1f8b0a1b27a35cbfcbf9fa03e51a35472637
 const PenjadwalanModel = require('../../models/Jadwal/JadwalModel');
 const UserModel = require('../../models/Authtentication/UserModel');
 const validationId = require('../../utils/ValidationController/ValidationId');
@@ -116,6 +119,7 @@ class SiswaController {
         });
     }
 
+<<<<<<< HEAD
     showNilai(req, res) {
         const userId = req.user?.id;
         if (!userId) {
@@ -135,6 +139,8 @@ class SiswaController {
         });
     }
 
+=======
+>>>>>>> 0a1e1f8b0a1b27a35cbfcbf9fa03e51a35472637
     showPresensi(req, res) {
         const userId = req.user?.id;
         if (!userId) {
