@@ -21,7 +21,10 @@ import BiodataSiswa from '../pages/SiswaDashboard/Biodata/Biodata.jsx'
 import EditBiodata from '../pages/SiswaDashboard/Biodata/BiodataResource/EditBiodata.jsx'
 import KelasSiswa from '../pages/SiswaDashboard/KelasSiswa.jsx'
 import PresensiSiswa from '../pages/SiswaDashboard/PresensiSiswa.jsx'
+<<<<<<< HEAD
 import NilaiSiswa from '../pages/SiswaDashboard/NilaiSiswa.jsx'
+=======
+>>>>>>> a62f712e38219c6aa3cffdcd0539fd19e53f352e
 export default function AppRouter() {
   return (
     <BrowserRouter>
