@@ -21,6 +21,7 @@ import BiodataSiswa from '../pages/SiswaDashboard/Biodata/Biodata.jsx'
 import EditBiodata from '../pages/SiswaDashboard/Biodata/BiodataResource/EditBiodata.jsx'
 import KelasSiswa from '../pages/SiswaDashboard/KelasSiswa.jsx'
 import PresensiSiswa from '../pages/SiswaDashboard/PresensiSiswa.jsx'
+import NilaiSiswa from '../pages/SiswaDashboard/NilaiSiswa.jsx'
 export default function AppRouter() {
   return (
     <BrowserRouter>
@@ -47,6 +48,7 @@ export default function AppRouter() {
         <Route path="/dashboard-siswa/biodata/EditBiodata/:id" element={<EditBiodata />} />
         <Route path="/dashboard-siswa/kelas" element={<KelasSiswa />} />
         <Route path="/dashboard-siswa/presensi" element={<PresensiSiswa />} />
+        <Route path="/dashboard-siswa/nilai" element={<NilaiSiswa />} />
       </Routes>
     </BrowserRouter>
   )

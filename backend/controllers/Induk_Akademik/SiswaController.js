@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const SiswaModel = require('../../models/induk_akademik/SiswaModel');
 const KehadiranModel = require('../../models/Kehadiran/KehadiranModel');
+const PenilaianModel = require('../../models/Penilaian/PenilaianModel');
 const PenjadwalanModel = require('../../models/Jadwal/JadwalModel');
 const UserModel = require('../../models/Authtentication/UserModel');
 const validationId = require('../../utils/ValidationController/ValidationId');
@@ -110,6 +111,25 @@ class SiswaController {
             return res.status(200).json({
                 success: true,
                 message: 'Data kelas berhasil diambil',
+                data: results,
+            });
+        });
+    }
+
+    showNilai(req, res) {
+        const userId = req.user?.id;
+        if (!userId) {
+            return AppError(res, 'User tidak ditemukan', 401, 'User tidak ditemukan');
+        }
+
+        PenilaianModel.getNilaiByUserId(userId, (err, results) => {
+            if (err) {
+                return AppError(res, err, 500, err.message);
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: 'Nilai berhasil diambil',
                 data: results,
             });
         });
