@@ -17,6 +17,9 @@ import EditMapel from '../pages/AdminDashboard/Induk_Akademik/MapelResource/Edit
 import TambahKelas from '../pages/AdminDashboard/Induk_Akademik/KelasResource/TambahKelas.jsx'
 import EditKelas from '../pages/AdminDashboard/Induk_Akademik/KelasResource/EditKelas.jsx'
 import PengumumanPage from '../pages/AdminDashboard/pengumuman/PengumumanPage.jsx'
+import PenilaianPage from '../pages/AdminDashboard/Penilaian/PenilaianPage.jsx'
+import TambahPenilaian from '../pages/AdminDashboard/Penilaian/PenilaianResource/TambahPenilaian.jsx'
+import EditPenilaian from '../pages/AdminDashboard/Penilaian/PenilaianResource/EditPenilaian.jsx'
 import BiodataSiswa from '../pages/SiswaDashboard/Biodata/Biodata.jsx'
 import EditBiodata from '../pages/SiswaDashboard/Biodata/BiodataResource/EditBiodata.jsx'
 import KelasSiswa from '../pages/SiswaDashboard/KelasSiswa.jsx'
@@ -43,6 +46,9 @@ export default function AppRouter() {
         <Route path="/Induk_Akademik/KelasResource/TambahKelas" element={<TambahKelas />} />
         <Route path="/Induk_Akademik/KelasResource/EditKelas/:id" element={<EditKelas />} />
         <Route path="/Pengumuman" element={<PengumumanPage />} />
+        <Route path="/Penilaian" element={<PenilaianPage />} />
+        <Route path="/Penilaian/PenilaianResource/TambahPenilaian" element={<TambahPenilaian />} />
+        <Route path="/Penilaian/PenilaianResource/EditPenilaian/:id" element={<EditPenilaian />} />
         <Route path="/dashboard-siswa" element={<DashboardSiswa />} />
         <Route path="/dashboard-siswa/biodata" element={<BiodataSiswa />} />
         <Route path="/dashboard-siswa/biodata/EditBiodata/:id" element={<EditBiodata />} />

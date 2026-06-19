@@ -57,6 +57,7 @@ router.delete('/kelas/:id', Auth, Authorize('admin', 'guru'), KelasController.de
 
 // route data penilaian
 router.get('/penilaian', Auth, Authorize('admin', 'guru', 'siswa'), PenilaianController.index);
+router.get('/penilaian/:id', Auth, Authorize('admin', 'guru'), PenilaianController.show);
 router.post('/penilaian', Auth, Authorize('admin', 'guru'), PenilaianController.store);
 router.put('/penilaian/:id', Auth, Authorize('admin', 'guru'), PenilaianController.update);
 router.delete('/penilaian/:id', Auth, Authorize('admin'), PenilaianController.destroy);
