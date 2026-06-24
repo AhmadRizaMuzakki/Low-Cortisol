@@ -23,6 +23,9 @@ import EditPenilaian from '../pages/AdminDashboard/Penilaian/PenilaianResource/E
 import PenjadwalanPage from "../pages/AdminDashboard/Penjadwalan/PenjadwalanPage.jsx";
 import TambahPenjadwalan from '../pages/AdminDashboard/Penjadwalan/PenjadwalanResource/TambahPenjadwalan.jsx'
 import EditPenjadwalan from '../pages/AdminDashboard/Penjadwalan/PenjadwalanResource/EditPenjadwalan.jsx'
+import PresensiPage from '../pages/AdminDashboard/presensi/PresensiPage.jsx'
+import TambahPresensi from '../pages/AdminDashboard/presensi/PresensiResource/TambahPresensi.jsx'
+import EditPresensi from '../pages/AdminDashboard/presensi/PresensiResource/EditPresensi.jsx'
 import BiodataSiswa from '../pages/SiswaDashboard/Biodata/Biodata.jsx'
 import EditBiodata from '../pages/SiswaDashboard/Biodata/BiodataResource/EditBiodata.jsx'
 import KelasSiswa from '../pages/SiswaDashboard/KelasSiswa.jsx'
@@ -52,6 +55,9 @@ export default function AppRouter() {
         <Route path="/Penilaian" element={<PenilaianPage />} />
         <Route path="/Penilaian/PenilaianResource/TambahPenilaian" element={<TambahPenilaian />} />
         <Route path="/Penilaian/PenilaianResource/EditPenilaian/:id" element={<EditPenilaian />} />
+        <Route path="/Presensi" element={<PresensiPage />} />
+        <Route path="/Presensi/PresensiResource/TambahPresensi" element={<TambahPresensi />} />
+        <Route path="/Presensi/PresensiResource/EditPresensi/:id" element={<EditPresensi />} />
         <Route path="/Penjadwalan" element={<PenjadwalanPage />} />
         <Route path="/Penjadwalan/PenjadwalanResource/TambahPenjadwalan" element={<TambahPenjadwalan />} />
         <Route path="/Penjadwalan/PenjadwalanResource/EditPenjadwalan/:id" element={<EditPenjadwalan />} />

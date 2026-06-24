@@ -71,6 +71,7 @@ router.delete('/penjadwalan/:id', Auth, Authorize('admin'), PenjadwalanControlle
 
 // route data kehadiran
 router.get('/kehadiran', Auth, Authorize('admin', 'guru', 'siswa'), KehadiranController.index);
+router.get('/kehadiran/:id', Auth, Authorize('admin', 'guru'), KehadiranController.show);
 router.post('/kehadiran', Auth, Authorize('admin', 'guru'), KehadiranController.store);
 router.put('/kehadiran/:id', Auth, Authorize('admin', 'guru'), KehadiranController.update);
 router.delete('/kehadiran/:id', Auth, Authorize('admin'), KehadiranController.destroy);
