@@ -20,6 +20,9 @@ import PengumumanPage from '../pages/AdminDashboard/pengumuman/PengumumanPage.js
 import PenilaianPage from '../pages/AdminDashboard/Penilaian/PenilaianPage.jsx'
 import TambahPenilaian from '../pages/AdminDashboard/Penilaian/PenilaianResource/TambahPenilaian.jsx'
 import EditPenilaian from '../pages/AdminDashboard/Penilaian/PenilaianResource/EditPenilaian.jsx'
+import PenjadwalanPage from "../pages/AdminDashboard/Penjadwalan/PenjadwalanPage.jsx";
+import TambahPenjadwalan from '../pages/AdminDashboard/Penjadwalan/PenjadwalanResource/TambahPenjadwalan.jsx'
+import EditPenjadwalan from '../pages/AdminDashboard/Penjadwalan/PenjadwalanResource/EditPenjadwalan.jsx'
 import BiodataSiswa from '../pages/SiswaDashboard/Biodata/Biodata.jsx'
 import EditBiodata from '../pages/SiswaDashboard/Biodata/BiodataResource/EditBiodata.jsx'
 import KelasSiswa from '../pages/SiswaDashboard/KelasSiswa.jsx'
@@ -49,6 +52,9 @@ export default function AppRouter() {
         <Route path="/Penilaian" element={<PenilaianPage />} />
         <Route path="/Penilaian/PenilaianResource/TambahPenilaian" element={<TambahPenilaian />} />
         <Route path="/Penilaian/PenilaianResource/EditPenilaian/:id" element={<EditPenilaian />} />
+        <Route path="/Penjadwalan" element={<PenjadwalanPage />} />
+        <Route path="/Penjadwalan/PenjadwalanResource/TambahPenjadwalan" element={<TambahPenjadwalan />} />
+        <Route path="/Penjadwalan/PenjadwalanResource/EditPenjadwalan/:id" element={<EditPenjadwalan />} />
         <Route path="/dashboard-siswa" element={<DashboardSiswa />} />
         <Route path="/dashboard-siswa/biodata" element={<BiodataSiswa />} />
         <Route path="/dashboard-siswa/biodata/EditBiodata/:id" element={<EditBiodata />} />

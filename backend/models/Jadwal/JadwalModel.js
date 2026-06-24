@@ -13,7 +13,7 @@ class PenjadwalanModel {
         });
     }
 
-    static getAllJadwalDetail(guruUserId, callback) {
+    static getAllJadwalDetail(idGuru, callback) {
         let query = `
             SELECT
                 jp.id_jadwal,
@@ -33,9 +33,9 @@ class PenjadwalanModel {
         `;
         const params = [];
 
-        if (guruUserId) {
-            query += ' WHERE g.user_id = ?';
-            params.push(guruUserId);
+        if (idGuru) {
+            query += ' WHERE jp.id_guru = ?';
+            params.push(idGuru);
         }
 
         query += " ORDER BY k.nama_kelas, m.nama_mapel, FIELD(jp.hari, 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'), jp.jam_mulai";
@@ -181,7 +181,6 @@ class PenjadwalanModel {
         });
     }
 
-    // Mengambil data jadwal berdasarkan ID
     static getJadwalById(id, callback) {
         db.query('SELECT * FROM jadwal_pelajaran WHERE id_jadwal = ?', [id], (err, results) => {
             if(err) {
@@ -190,6 +189,35 @@ class PenjadwalanModel {
                 callback(null, results);
             }
         });
+    }
+
+    static getJadwalDetailById(id, callback) {
+        db.query(
+            `SELECT
+                jp.id_jadwal,
+                jp.id_kelas,
+                jp.id_mapel,
+                jp.id_guru,
+                jp.hari,
+                jp.jam_mulai,
+                jp.jam_selesai,
+                m.nama_mapel,
+                k.nama_kelas,
+                g.nama_guru
+             FROM jadwal_pelajaran jp
+             INNER JOIN mapel m ON jp.id_mapel = m.id_mapel
+             INNER JOIN kelas k ON jp.id_kelas = k.id_kelas
+             INNER JOIN guru g ON jp.id_guru = g.id_guru
+             WHERE jp.id_jadwal = ?`,
+            [id],
+            (err, results) => {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, results);
+                }
+            }
+        );
     }
 
     // Menambahkan jadwal baru

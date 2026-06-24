@@ -1,33 +1,34 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getKelas } from '../../utils/Induk_Akademik/KelasUtils'
-import { getMapel } from '../../utils/Induk_Akademik/MapelUtils.jsx'
 import { parseListResponse } from '../../utils/Induk_Akademik/apiHelpers'
 import {
-  hitungRataRata,
+  deletePenjadwalan,
+  formatJam,
+  hariOptions,
   paginateList,
-  PENILAIAN_PER_PAGE,
-  formatSemesterLabel,
-} from '../../utils/Penilaian/PenilaianUtils'
+  PENJADWALAN_PER_PAGE,
+} from '../../utils/Penjadwalan/PenjadwalanUtils'
 
-export default function PenilaianTable({ itemList = [], loading = false, error = null }) {
+export default function PenjadwalanTable({
+  itemList = [],
+  loading = false,
+  error = null,
+  isAdmin = false,
+  onItemDeleted,
+}) {
   const navigate = useNavigate()
-  const [filterMapel, setFilterMapel] = useState('')
+  const [filterHari, setFilterHari] = useState('')
   const [filterKelas, setFilterKelas] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [kelasList, setKelasList] = useState([])
-  const [mapelList, setMapelList] = useState([])
+  const [deletingId, setDeletingId] = useState(null)
+  const [deleteError, setDeleteError] = useState('')
 
   useEffect(() => {
-    Promise.all([getKelas(), getMapel()])
-      .then(([kelasRes, mapelRes]) => {
-        setKelasList(parseListResponse(kelasRes.data))
-        setMapelList(parseListResponse(mapelRes.data))
-      })
-      .catch(() => {
-        setKelasList([])
-        setMapelList([])
-      })
+    getKelas()
+      .then((res) => setKelasList(parseListResponse(res.data)))
+      .catch(() => setKelasList([]))
   }, [])
 
   const kelasOptions = useMemo(() => {
@@ -51,40 +52,13 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
       .sort((a, b) => a.nama.localeCompare(b.nama))
   }, [kelasList, itemList])
 
-  const mapelOptions = useMemo(() => {
-    if (mapelList.length > 0) {
-      return mapelList
-        .map((mapel) => ({
-          id: String(mapel.id_mapel),
-          nama: mapel.nama_mapel,
-        }))
-        .sort((a, b) => a.nama.localeCompare(b.nama))
-    }
-
-    const map = new Map()
-    itemList.forEach((item) => {
-      if (item.nama_mapel) {
-        map.set(item.nama_mapel, item.nama_mapel)
-      }
-    })
-    return [...map.entries()]
-      .map(([nama]) => ({ id: nama, nama }))
-      .sort((a, b) => a.nama.localeCompare(b.nama))
-  }, [mapelList, itemList])
-
   const filteredList = useMemo(() => {
-    const selectedMapelName = mapelOptions.find((m) => m.id === filterMapel)?.nama
-
     return itemList.filter((item) => {
-      const matchMapel =
-        !filterMapel ||
-        item.nama_mapel === selectedMapelName ||
-        item.nama_mapel === filterMapel ||
-        String(item.id_mapel) === filterMapel
+      const matchHari = !filterHari || item.hari === filterHari
       const matchKelas = !filterKelas || String(item.id_kelas) === filterKelas
-      return matchMapel && matchKelas
+      return matchHari && matchKelas
     })
-  }, [itemList, filterMapel, filterKelas, mapelOptions])
+  }, [itemList, filterHari, filterKelas])
 
   const { items, total, totalPages, currentPage: safePage } = useMemo(
     () => paginateList(filteredList, currentPage),
@@ -93,7 +67,7 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [filterMapel, filterKelas, itemList.length])
+  }, [filterHari, filterKelas, itemList.length])
 
   useEffect(() => {
     if (currentPage > totalPages) {
@@ -101,8 +75,31 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
     }
   }, [currentPage, totalPages])
 
+  async function handleDelete(id) {
+    if (!window.confirm('Yakin ingin menghapus jadwal ini?')) {
+      return
+    }
+
+    setDeletingId(id)
+    setDeleteError('')
+
+    try {
+      await deletePenjadwalan(id)
+      onItemDeleted?.(id)
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.error?.error ||
+        err.message ||
+        'Gagal menghapus jadwal'
+      setDeleteError(msg)
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
   if (loading) {
-    return <p className="text-app-muted">Memuat data penilaian...</p>
+    return <p className="text-app-muted">Memuat data penjadwalan...</p>
   }
 
   if (error) {
@@ -111,24 +108,24 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
 
   return (
     <div className="space-y-4">
-      {!loading && !error && (
+      {!loading && !error && itemList.length > 0 && (
         <div className="card w-full bg-base-100 shadow-sm">
           <div className="card-body py-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end">
               <div className="form-control w-full sm:max-w-xs">
-                <label className="label py-1" htmlFor="filter-mapel">
-                  <span className="label-text font-medium">Mata Pelajaran</span>
+                <label className="label py-1" htmlFor="filter-hari">
+                  <span className="label-text font-medium">Hari</span>
                 </label>
                 <select
-                  id="filter-mapel"
+                  id="filter-hari"
                   className="select select-bordered select-sm w-full"
-                  value={filterMapel}
-                  onChange={(e) => setFilterMapel(e.target.value)}
+                  value={filterHari}
+                  onChange={(e) => setFilterHari(e.target.value)}
                 >
-                  <option value="">Semua Mata Pelajaran</option>
-                  {mapelOptions.map((mapel) => (
-                    <option key={mapel.id} value={mapel.id}>
-                      {mapel.nama}
+                  <option value="">Semua Hari</option>
+                  {hariOptions.map((hari) => (
+                    <option key={hari} value={hari}>
+                      {hari}
                     </option>
                   ))}
                 </select>
@@ -160,10 +157,12 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
 
       <div className="card w-full bg-base-100 shadow-sm">
         <div className="card-body">
+          {deleteError && <div className="alert alert-error">{deleteError}</div>}
+
           {itemList.length === 0 ? (
-            <p className="text-app-muted">Belum ada data penilaian.</p>
+            <p className="text-app-muted">Belum ada data penjadwalan.</p>
           ) : filteredList.length === 0 ? (
-            <p className="text-app-muted">Tidak ada data penilaian untuk filter yang dipilih.</p>
+            <p className="text-app-muted">Tidak ada data jadwal untuk filter yang dipilih.</p>
           ) : (
             <>
               <div className="overflow-x-auto">
@@ -171,43 +170,47 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Siswa</th>
-                      <th>Mata Pelajaran</th>
                       <th>Kelas</th>
-                      <th>Semester</th>
-                      <th>Tugas</th>
-                      <th>UTS</th>
-                      <th>UAS</th>
-                      <th>Rata-rata</th>
-                      <th>Catatan</th>
+                      <th>Mata Pelajaran</th>
+                      <th>Guru</th>
+                      <th>Hari</th>
+                      <th>Jam Mulai</th>
+                      <th>Jam Selesai</th>
                       <th className="text-right">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
                     {items.map((item, index) => (
-                      <tr key={item.id_nilai}>
-                        <td>{(safePage - 1) * PENILAIAN_PER_PAGE + index + 1}</td>
-                        <td className="font-medium">{item.nama_siswa ?? '-'}</td>
-                        <td>{item.nama_mapel ?? '-'}</td>
+                      <tr key={item.id_jadwal}>
+                        <td>{(safePage - 1) * PENJADWALAN_PER_PAGE + index + 1}</td>
                         <td>{item.nama_kelas ?? '-'}</td>
-                        <td>{formatSemesterLabel(item.semester)}</td>
-                        <td>{item.nilai_tugas ?? '-'}</td>
-                        <td>{item.nilai_uts ?? '-'}</td>
-                        <td>{item.nilai_uas ?? '-'}</td>
-                        <td className="font-semibold">
-                          {hitungRataRata(item.nilai_tugas, item.nilai_uts, item.nilai_uas)}
-                        </td>
-                        <td className="max-w-[180px] truncate">{item.catatan_karakter || '-'}</td>
+                        <td className="font-medium">{item.nama_mapel ?? '-'}</td>
+                        <td>{item.nama_guru ?? '-'}</td>
+                        <td>{item.hari ?? '-'}</td>
+                        <td>{formatJam(item.jam_mulai)}</td>
+                        <td>{formatJam(item.jam_selesai)}</td>
                         <td className="text-right">
                           <button
                             type="button"
                             onClick={() =>
-                              navigate(`/Penilaian/PenilaianResource/EditPenilaian/${item.id_nilai}`)
+                              navigate(
+                                `/Penjadwalan/PenjadwalanResource/EditPenjadwalan/${item.id_jadwal}`,
+                              )
                             }
                             className="btn btn-primary btn-sm"
                           >
                             Edit
                           </button>
+                          {isAdmin && (
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(item.id_jadwal)}
+                              className="btn btn-error btn-sm"
+                              disabled={deletingId === item.id_jadwal}
+                            >
+                              {deletingId === item.id_jadwal ? 'Menghapus...' : 'Hapus'}
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -217,8 +220,8 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
 
               <div className="mt-4 flex flex-col items-center justify-between gap-3 sm:flex-row">
                 <p className="text-sm text-app-muted">
-                  Menampilkan {(safePage - 1) * PENILAIAN_PER_PAGE + 1}–
-                  {Math.min(safePage * PENILAIAN_PER_PAGE, total)} dari {total} data
+                  Menampilkan {(safePage - 1) * PENJADWALAN_PER_PAGE + 1}–
+                  {Math.min(safePage * PENJADWALAN_PER_PAGE, total)} dari {total} data
                 </p>
                 <div className="join">
                   <button
