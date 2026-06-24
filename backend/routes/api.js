@@ -64,6 +64,7 @@ router.delete('/penilaian/:id', Auth, Authorize('admin'), PenilaianController.de
 
 // route data penjadwalan
 router.get('/penjadwalan', Auth, Authorize('admin', 'guru', 'siswa'), PenjadwalanController.index);
+router.get('/penjadwalan/:id', Auth, Authorize('admin', 'guru'), PenjadwalanController.show);
 router.post('/penjadwalan', Auth, Authorize('admin', 'guru'), PenjadwalanController.store);
 router.put('/penjadwalan/:id', Auth, Authorize('admin', 'guru'), PenjadwalanController.update);
 router.delete('/penjadwalan/:id', Auth, Authorize('admin'), PenjadwalanController.destroy);
