@@ -82,9 +82,9 @@ class PenjadwalanController {
         const { id } = req.params;
         const { id_kelas, id_mapel, id_guru, hari, jam_mulai, jam_selesai } = req.body;
         const jadwal = { id_kelas, id_mapel, id_guru, hari, jam_mulai, jam_selesai };
-        const idError = validationId(id);
-        if (idError) {
-            return AppError(res, idError, 400, idError.error);
+        const AppError = validationId(id);
+        if (AppError) {
+            return AppError(res, AppError, 400, AppError.error);
         }
         const bodyError = validationJadwal(jadwal);
         if (bodyError) {
@@ -102,11 +102,11 @@ class PenjadwalanController {
     // Menghapus data jadwal
     destroy(req, res) {
         const { id } = req.params;
-        const idError = validationId(id);
-        if (idError) {
-            return AppError(res, idError, 400, idError.error);
+        const AppError = validationId(id);
+        if (AppError) {
+            return AppError(res, AppError, 400, AppError.error);
         }
-
+        
         PenjadwalanModel.deleteJadwal(id, (err, results) => {
             if(err){
                 return AppError(res, err, 500, err.message);
