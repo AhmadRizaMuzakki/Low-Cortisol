@@ -2,51 +2,101 @@ const db = require('../../config/database');
 
 class KehadiranModel {
     static getAllKehadiran(callback) {
-        db.query('SELECT * FROM presensi', (err, results) => {
-            if (err) {
-                callback (err, null);
-            } else {
-                callback (null, results);
+        db.query(
+            `SELECT
+                p.id_presensi,
+                p.id_siswa,
+                p.id_jadwal,
+                p.tanggal,
+                p.status,
+                s.nama_siswa,
+                k.id_kelas,
+                k.nama_kelas,
+                m.id_mapel,
+                m.nama_mapel,
+                jp.hari,
+                jp.jam_mulai,
+                jp.jam_selesai,
+                g.nama_guru
+             FROM presensi p
+             INNER JOIN siswa s ON p.id_siswa = s.id_siswa
+             INNER JOIN jadwal_pelajaran jp ON p.id_jadwal = jp.id_jadwal
+             INNER JOIN mapel m ON jp.id_mapel = m.id_mapel
+             INNER JOIN kelas k ON jp.id_kelas = k.id_kelas
+             INNER JOIN guru g ON jp.id_guru = g.id_guru
+             ORDER BY p.tanggal DESC, jp.jam_mulai`,
+            (err, results) => {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, results || []);
+                }
             }
-        });
+        );
     }
+
     static getKehadiranById(id, callback) {
-        db.query('SELECT * FROM presensi WHERE id = ?', [id], (err, results) => {
-            if (err) {
-                callback (err, null);
-            } else {
-                callback (null, results[0]);
+        db.query(
+            `SELECT
+                p.id_presensi,
+                p.id_siswa,
+                p.id_jadwal,
+                p.tanggal,
+                p.status,
+                s.nama_siswa,
+                k.id_kelas,
+                k.nama_kelas,
+                m.id_mapel,
+                m.nama_mapel,
+                jp.hari,
+                jp.jam_mulai,
+                jp.jam_selesai,
+                g.nama_guru
+             FROM presensi p
+             INNER JOIN siswa s ON p.id_siswa = s.id_siswa
+             INNER JOIN jadwal_pelajaran jp ON p.id_jadwal = jp.id_jadwal
+             INNER JOIN mapel m ON jp.id_mapel = m.id_mapel
+             INNER JOIN kelas k ON jp.id_kelas = k.id_kelas
+             INNER JOIN guru g ON jp.id_guru = g.id_guru
+             WHERE p.id_presensi = ?`,
+            [id],
+            (err, results) => {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, results?.[0] || null);
+                }
             }
-        });
+        );
     }
     static createKehadiran(kehadiran, callback) {
-        db.query('INSERT INTO presensi (id_siswa, id_jadwal, tanggal, status) VALUES (?, ?, ?, ?)', 
-            [kehadiran.id_siswa, kehadiran.id_jadwal, kehadiran.tanggal, kehadiran.status], 
+        db.query('INSERT INTO presensi (id_siswa, id_jadwal, tanggal, status) VALUES (?, ?, ?, ?)',
+            [kehadiran.id_siswa, kehadiran.id_jadwal, kehadiran.tanggal, kehadiran.status],
             (err, results) => {
-            if (err) {
-                callback (err, null);
-            } else {
-                callback (null, results);
-            }
-        });
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, results);
+                }
+            });
     }
     static updateKehadiran(id, kehadiran, callback) {
-        db.query('UPDATE presensi SET id_siswa = ?, id_jadwal = ?, tanggal = ?, status = ? WHERE id_presensi = ?', 
-            [kehadiran.id_siswa, kehadiran.id_jadwal, kehadiran.tanggal, kehadiran.status, id], 
+        db.query('UPDATE presensi SET id_siswa = ?, id_jadwal = ?, tanggal = ?, status = ? WHERE id_presensi = ?',
+            [kehadiran.id_siswa, kehadiran.id_jadwal, kehadiran.tanggal, kehadiran.status, id],
             (err, results) => {
-            if (err) {
-                callback (err, null);
-            } else {
-                callback (null, results);
-            }
-        });
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, results);
+                }
+            });
     }
     static deleteKehadiran(id, callback) {
         db.query('DELETE FROM presensi WHERE id_presensi = ?', [id], (err, results) => {
             if (err) {
-                callback (err, null);
+                callback(err, null);
             } else {
-                callback (null, results);
+                callback(null, results);
             }
         });
     }
