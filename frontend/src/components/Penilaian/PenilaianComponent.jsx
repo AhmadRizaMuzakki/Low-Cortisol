@@ -4,19 +4,28 @@ import { getKelas } from '../../utils/Induk_Akademik/KelasUtils'
 import { getMapel } from '../../utils/Induk_Akademik/MapelUtils.jsx'
 import { parseListResponse } from '../../utils/Induk_Akademik/apiHelpers'
 import {
+  deletePenilaian,
   hitungRataRata,
   paginateList,
   PENILAIAN_PER_PAGE,
   formatSemesterLabel,
 } from '../../utils/Penilaian/PenilaianUtils'
 
-export default function PenilaianTable({ itemList = [], loading = false, error = null }) {
+export default function PenilaianTable({
+  itemList = [],
+  loading = false,
+  error = null,
+  isAdmin = false,
+  onItemDeleted,
+}) {
   const navigate = useNavigate()
   const [filterMapel, setFilterMapel] = useState('')
   const [filterKelas, setFilterKelas] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [kelasList, setKelasList] = useState([])
   const [mapelList, setMapelList] = useState([])
+  const [deletingId, setDeletingId] = useState(null)
+  const [deleteError, setDeleteError] = useState('')
 
   useEffect(() => {
     Promise.all([getKelas(), getMapel()])
@@ -101,6 +110,29 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
     }
   }, [currentPage, totalPages])
 
+  async function handleDelete(id) {
+    if (!window.confirm('Yakin ingin menghapus penilaian ini?')) {
+      return
+    }
+
+    setDeletingId(id)
+    setDeleteError('')
+
+    try {
+      await deletePenilaian(id)
+      onItemDeleted?.(id)
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.error?.error ||
+        err.message ||
+        'Gagal menghapus penilaian'
+      setDeleteError(msg)
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
   if (loading) {
     return <p className="text-app-muted">Memuat data penilaian...</p>
   }
@@ -160,6 +192,8 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
 
       <div className="card w-full bg-base-100 shadow-sm">
         <div className="card-body">
+          {deleteError && <div className="alert alert-error">{deleteError}</div>}
+
           {itemList.length === 0 ? (
             <p className="text-app-muted">Belum ada data penilaian.</p>
           ) : filteredList.length === 0 ? (
@@ -208,6 +242,16 @@ export default function PenilaianTable({ itemList = [], loading = false, error =
                           >
                             Edit
                           </button>
+                          {isAdmin && (
+                            <button
+                              type="button"
+                              onClick={() => handleDelete(item.id_nilai)}
+                              className="btn btn-error btn-sm"
+                              disabled={deletingId === item.id_nilai}
+                            >
+                              {deletingId === item.id_nilai ? 'Menghapus...' : 'Hapus'}
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}

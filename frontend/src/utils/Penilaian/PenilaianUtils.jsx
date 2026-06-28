@@ -18,6 +18,10 @@ export function updatePenilaian(id, data) {
   return http.put(`/penilaian/${id}`, data)
 }
 
+export function deletePenilaian(id) {
+  return http.delete(`/penilaian/${id}`)
+}
+
 export function getMapelPenilaian() {
   return http.get('/mapel')
 }

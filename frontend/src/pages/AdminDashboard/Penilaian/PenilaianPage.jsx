@@ -9,6 +9,7 @@ import { getPenilaian } from '../../../utils/Penilaian/PenilaianUtils.jsx'
 
 export default function PenilaianPage() {
   const { isAuthenticated, role } = useAuth()
+  const isAdmin = role === 'admin'
   const navigate = useNavigate()
   const location = useLocation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -39,6 +40,10 @@ export default function PenilaianPage() {
 
   function handleNavigateToCreate() {
     navigate('/Penilaian/PenilaianResource/TambahPenilaian')
+  }
+
+  function handleItemDeleted(id) {
+    setItemList((prev) => prev.filter((item) => item.id_nilai !== id))
   }
 
   if (!isAuthenticated) {
@@ -77,7 +82,13 @@ export default function PenilaianPage() {
             <button type="button" onClick={handleNavigateToCreate} className="btn btn-primary">
               Tambah Penilaian
             </button>
-            <PenilaianTable itemList={itemList} loading={loading} error={error} />
+            <PenilaianTable
+              itemList={itemList}
+              loading={loading}
+              error={error}
+              isAdmin={isAdmin}
+              onItemDeleted={handleItemDeleted}
+            />
           </div>
         </main>
       </div>
